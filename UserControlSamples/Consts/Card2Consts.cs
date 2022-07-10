@@ -8,8 +8,9 @@ namespace UserControlSamples.Consts
 {
     public class Card2Consts
     {
+        public const int DefaultMaxCardCount = 8;
         public const string DisplayName = "卡片二";
-        public const string IP_COLUMN = "IP";
-        public const string PORT_COLUMN = "PORT";
+        public const string IPColumn = "IP";
+        public const string PortColumn = "PORT";
     }
 }

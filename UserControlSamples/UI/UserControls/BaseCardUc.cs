@@ -10,43 +10,23 @@ using System.Windows.Forms;
 using UserControlSamples.Consts;
 using UserControlSamples.Models;
 
-namespace UserControlSamples.UserControls
+namespace UserControlSamples.UI.UserControls
 {
     public partial class BaseCardUc : UserControl
     {
-        public delegate void RemoveCardDelegate(BaseCard currentCard);
+        public delegate void RemoveCardHandler(BaseCardUc obj, BaseCard currentCard);
 
-        [CategoryAttribute("自定义卡片"), DescriptionAttribute("删除卡片事件")]
-        public event RemoveCardDelegate RemoveCardHandler;
+        [Category(CardConsts.Name), Description(CardConsts.RemoveCardEvent)]
+        public event RemoveCardHandler OnRemoveCard;
 
-
-        [CategoryAttribute("自定义卡片"), DescriptionAttribute("卡片信息"), ReadOnly(true)]
+        [Category(CardConsts.Name), Description(CardConsts.CardPrimaryKeyProperty)]
         public BaseCard CurrentCard { get; private set; }
 
         protected IDictionary<string, string> Items { get; set; }
 
         public string Key { get { return CurrentCard.ToString(); } }
 
-
-        /// <summary>
-        /// 数据类型:
-        /// 0:新增数据
-        /// 1:修改数据
-        /// </summary>
         protected int DataType { get; private set; } = 0;
-
-        /// <summary>
-        /// 类型
-        /// </summary>
-        protected string PARTNAME
-        {
-            get { return CurrentCard.PartName; }
-            set
-            {
-                CurrentCard.PartName = value;
-
-            }
-        }
 
         public BaseCardUc()
         {
@@ -55,10 +35,10 @@ namespace UserControlSamples.UserControls
             Items = new Dictionary<string, string>();
         }
 
-        public BaseCardUc(string partName, int sn, IDictionary<string, string> items = null) : this()
+        public BaseCardUc(string type, int sn, IDictionary<string, string> items = null) : this()
         {
-            CurrentCard.PartName = partName;
-            CurrentCard.Sn = sn;
+            CurrentCard.Key.Type = type;
+            CurrentCard.Key.Sn = sn;
             if (items != null)
             {
                 this.Items = items;
@@ -72,18 +52,9 @@ namespace UserControlSamples.UserControls
         /// </summary>
         protected void Clear()
         {
-            ClearItem();
+            Items.Clear();
             var sSql = DeleteCmdString();
             Execute(sSql);
-        }
-
-        /// <summary>
-        /// 加载数据
-        /// </summary>
-        /// <returns></returns>
-        public virtual int LoadData()
-        {
-            return 0;
         }
 
         /// <summary>
@@ -107,16 +78,6 @@ namespace UserControlSamples.UserControls
         protected virtual void SetData()
         {
 
-        }
-
-        protected void AddItem(string name, string value)
-        {
-            Items.Add(name, value);
-        }
-
-        protected void ClearItem()
-        {
-            Items.Clear();
         }
 
         public virtual string GetCmdString()
@@ -153,25 +114,24 @@ namespace UserControlSamples.UserControls
             return GetDeleteCmdString();
         }
 
-
         protected string GetLoadCmdString()
         {
-            return $"SELECT {DataBaseConsts.TYPE_COLUMN},{DataBaseConsts.SN_COLUMN},{DataBaseConsts.NAME_COLUMN},{DataBaseConsts.VALUE_COLUMN} FROM {DataBaseConsts.TABLE_NAME} WHERE {DataBaseConsts.TYPE_COLUMN}='{CurrentCard.PartName}' AND {DataBaseConsts.SN_COLUMN}={CurrentCard.Sn})";
+            return $"SELECT {DataBaseConsts.TypeColumn},{DataBaseConsts.SnColumn},{DataBaseConsts.NameColumn},{DataBaseConsts.ValueColumn} FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn})";
         }
 
         protected string GetAddCmdString(string name, string value)
         {
-            return $"INSERT INTO {DataBaseConsts.TABLE_NAME}({DataBaseConsts.TYPE_COLUMN},{DataBaseConsts.SN_COLUMN},{DataBaseConsts.NAME_COLUMN},{DataBaseConsts.VALUE_COLUMN}) values ('{CurrentCard.PartName}',{CurrentCard.Sn},'{name}','{value}');";
+            return $"INSERT INTO {DataBaseConsts.TableName}(project_type,unit_sn,unit_name,unit_value) values ('{CurrentCard.Key.Type}',{CurrentCard.Key.Sn},'{name}','{value}');";
         }
 
         protected string GetModifyCmdString(string name, string value)
         {
-            return $"UPDATE {DataBaseConsts.TABLE_NAME} SET {DataBaseConsts.VALUE_COLUMN}='{value}' WHERE {DataBaseConsts.TYPE_COLUMN}='{CurrentCard.PartName}' AND {DataBaseConsts.SN_COLUMN}={CurrentCard.Sn} AND {DataBaseConsts.NAME_COLUMN}='{name}';";
+            return $"UPDATE {DataBaseConsts.TableName} SET {DataBaseConsts.ValueColumn}='{value}' WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn} AND {DataBaseConsts.NameColumn}='{name}';";
         }
 
         protected string GetDeleteCmdString()
         {
-            return $"DELETE FROM {DataBaseConsts.TABLE_NAME} WHERE {DataBaseConsts.TYPE_COLUMN}='{CurrentCard.PartName}' AND {DataBaseConsts.SN_COLUMN}={CurrentCard.Sn};";
+            return $"DELETE FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn};";
         }
 
         protected void SaveData(string name, string value)
@@ -180,30 +140,32 @@ namespace UserControlSamples.UserControls
             Execute(sSql);
         }
 
-        protected void Execute(string sSql)
+        protected virtual void Execute(string sSql)
         {
-            
+
         }
 
-        private void Delete()
+        /// <summary>
+        /// 删除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void picClose_Click(object sender, EventArgs e)
         {
-            var dialog = MessageBox.Show($"确定删除{CurrentCard}?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
-            if (dialog != DialogResult.OK) return;
-            Clear();
-            if (RemoveCardHandler != null)
+            OnFireRemoveCard();
+        }
+
+        private void OnFireRemoveCard()
+        {
+            if (OnRemoveCard != null)
             {
-                RemoveCardHandler(CurrentCard);
+                OnRemoveCard(this, CurrentCard);
             }
         }
 
         private void tsmiDelete_Click(object sender, EventArgs e)
         {
-            Delete();
-        }
-
-        private void picClose_Click(object sender, EventArgs e)
-        {
-            Delete();
+            OnFireRemoveCard();
         }
     }
 }

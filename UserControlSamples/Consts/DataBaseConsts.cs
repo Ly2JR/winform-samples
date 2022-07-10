@@ -8,10 +8,10 @@ namespace UserControlSamples.Consts
 {
     public  class DataBaseConsts
     {
-        public const string TABLE_NAME = "Setting";
-        public const string TYPE_COLUMN = "type";
-        public const string SN_COLUMN = "sn";
-        public const string NAME_COLUMN = "name";
-        public const string VALUE_COLUMN = "value";
+        public const string TableName = "T_project_set";
+        public const string TypeColumn = "project_type";
+        public const string SnColumn = "unit_sn";
+        public const string NameColumn = "unit_name";
+        public const string ValueColumn = "unit_value";
     }
 }

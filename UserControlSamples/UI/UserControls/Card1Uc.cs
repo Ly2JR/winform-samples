@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
+using System.Windows.Forms;
 using UserControlSamples.Consts;
 
-namespace UserControlSamples.UserControls
+namespace UserControlSamples.UI.UserControls
 {
     public partial class Card1Uc : BaseCardUc
     {
         public Card1Uc(int sn, IDictionary<string, string> items = null) : base(Card1Consts.DisplayName, sn, items)
         {
             InitializeComponent();
-
             GetData();
         }
-
 
         protected override void GetData()
         {
@@ -20,7 +19,7 @@ namespace UserControlSamples.UserControls
             {
                 switch (item.Key)
                 {
-                    case Card1Consts.IO_COLUMN:
+                    case Card1Consts.IOColumn:
                         txtIO.Text = item.Value;
                         break;
                 }
@@ -29,13 +28,32 @@ namespace UserControlSamples.UserControls
 
         protected override void SetData()
         {
-            ClearItem();
-            AddItem(Card1Consts.IO_COLUMN, txtIO.Text);
+            Items.Clear();
+            Items.Add(Card1Consts.IOColumn, txtIO.Text);
         }
         public override string AddCmdString()
         {
             SetData();
             return base.AddCmdString();
+        }
+
+        public override string ModifyCmdString()
+        {
+            SetData();
+            return base.ModifyCmdString();
+        }
+
+        protected override void Execute(string sSql)
+        {
+            
+        }
+
+        private void SafetyDoorCardUc_OnRemoveCard(BaseCardUc obj, Models.BaseCard currentCard)
+        {
+            var dialog = MessageBox.Show($"确定删除{CurrentCard}?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (dialog != DialogResult.OK) return;
+            currentCard.Continute = true;
+            Clear();
         }
     }
 }

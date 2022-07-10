@@ -46,46 +46,70 @@
     <Compile Include="Consts\Card1Consts.cs" />
     <Compile Include="Consts\Card2Consts.cs" />
     <Compile Include="Consts\CardConsts.cs" />
-    <Compile Include="Consts\CardManagerButtonConsts.cs" />
+    <Compile Include="Consts\CardManagerConsts.cs" />
     <Compile Include="Consts\DataBaseConsts.cs" />
+    <Compile Include="Consts\LabelTagConsts.cs" />
+    <Compile Include="Consts\TagConsts.cs" />
+    <Compile Include="Consts\TagManagerConsts.cs" />
     <Compile Include="Facade.cs" />
-    <Compile Include="Frms\FrmCard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Frms\FrmCard.Designer.cs">
-      <DependentUpon>FrmCard.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Models\BaseTag.cs" />
+    <Compile Include="Models\ProjectSetKey.cs" />
     <Compile Include="Models\BaseCard.cs" />
-    <Compile Include="Models\BaseGroupBox.cs" />
+    <Compile Include="Models\BaseExpand.cs" />
+    <Compile Include="Models\TagEnum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\BaseCardUc.cs">
+    <Compile Include="UI\FrmAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmAdd.Designer.cs">
+      <DependentUpon>FrmAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\FrmCardManager.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\FrmCardManager.Designer.cs">
+      <DependentUpon>FrmCardManager.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\BaseCardUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\BaseCardUc.Designer.cs">
+    <Compile Include="UI\UserControls\BaseCardUc.Designer.cs">
       <DependentUpon>BaseCardUc.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Card1Uc.cs">
+    <Compile Include="UI\UserControls\BaseTagUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\Card1Uc.Designer.cs">
+    <Compile Include="UI\UserControls\BaseTagUc.Designer.cs">
+      <DependentUpon>BaseTagUc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\Card1Uc.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\Card1Uc.Designer.cs">
       <DependentUpon>Card1Uc.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\Card2Uc.cs">
+    <Compile Include="UI\UserControls\Card2Uc.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\Card2Uc.Designer.cs">
+    <Compile Include="UI\UserControls\Card2Uc.Designer.cs">
       <DependentUpon>Card2Uc.cs</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\CardManagerUc.cs">
+    <Compile Include="UI\UserControls\CardManagerUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="UserControls\CardManagerUc.Designer.cs">
+    <Compile Include="UI\UserControls\CardManagerUc.Designer.cs">
       <DependentUpon>CardManagerUc.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\UserControls\TagManagerUc.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UI\UserControls\TagManagerUc.Designer.cs">
+      <DependentUpon>TagManagerUc.cs</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -95,24 +119,30 @@
     <Content Include="Images\笔记本.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Frms\FrmCard.resx">
-      <DependentUpon>FrmCard.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\BaseCardUc.resx">
+    <EmbeddedResource Include="UI\FrmAdd.resx">
+      <DependentUpon>FrmAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\FrmCardManager.resx">
+      <DependentUpon>FrmCardManager.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\BaseCardUc.resx">
       <DependentUpon>BaseCardUc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Card1Uc.resx">
+    <EmbeddedResource Include="UI\UserControls\Card1Uc.resx">
       <DependentUpon>Card1Uc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\Card2Uc.resx">
+    <EmbeddedResource Include="UI\UserControls\Card2Uc.resx">
       <DependentUpon>Card2Uc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UserControls\CardManagerUc.resx">
+    <EmbeddedResource Include="UI\UserControls\CardManagerUc.resx">
       <DependentUpon>CardManagerUc.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\UserControls\TagManagerUc.resx">
+      <DependentUpon>TagManagerUc.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

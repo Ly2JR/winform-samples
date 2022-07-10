@@ -11,41 +11,24 @@ namespace UserControlSamples.Models
     /// </summary>
     public class BaseCard
     {
-        /// <summary>
-        /// 类型
-        /// </summary>
-        public string PartName { get; set; }
+        public ProjectSetKey Key { get; set; }
 
-        /// <summary>
-        /// 序号
-        /// </summary>
-        public int Sn { get; set; }
-
-        public string Key { get { return this.ToString(); } }
-
-        public BaseCard() { }
-
-        public BaseCard(string name, int sn)
+        public BaseCard()
         {
-            this.PartName = name;
-            this.Sn = sn;
+            Key = new ProjectSetKey();
         }
+
+        public BaseCard(string name, int sn) : this()
+        {
+            Key.Type = name;
+            Key.Sn = sn;
+        }
+
+        public bool Continute { get; set; }
 
         public override string ToString()
         {
-            return $"{PartName}#{Sn}";
-        }
-
-        public override int GetHashCode()
-        {
-            return PartName.GetHashCode() + Sn * 102;
-        }
-
-        public override bool Equals(object obj)
-        {
-            var baseCard = obj as BaseCard;
-            if (baseCard == null) return false;
-            return baseCard.ToString() == this.ToString();
+            return Key.ToString();
         }
     }
 
@@ -56,5 +39,6 @@ namespace UserControlSamples.Models
     {
         Card1 = 0,
         Card2,
+        UnKnown = 99
     }
 }

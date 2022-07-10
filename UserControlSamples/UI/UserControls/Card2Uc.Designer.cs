@@ -1,4 +1,4 @@
-﻿namespace UserControlSamples.UserControls
+﻿namespace UserControlSamples.UI.UserControls
 {
     partial class Card2Uc
     {
@@ -33,15 +33,10 @@
             this.txtIP = new System.Windows.Forms.TextBox();
             this.txtPort = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.plContainer.SuspendLayout();
-            this.plImage.SuspendLayout();
+            this.plLogo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
-            // 
-            // picLogo
-            // 
-            this.picLogo.Image = ((System.Drawing.Image)(resources.GetObject("picLogo.Image")));
-            this.picLogo.Size = new System.Drawing.Size(131, 81);
             // 
             // plContainer
             // 
@@ -49,17 +44,31 @@
             this.plContainer.Controls.Add(this.label2);
             this.plContainer.Controls.Add(this.txtIP);
             this.plContainer.Controls.Add(this.label1);
-            this.plContainer.Location = new System.Drawing.Point(0, 143);
-            this.plContainer.Size = new System.Drawing.Size(181, 81);
+            this.plContainer.Location = new System.Drawing.Point(0, 169);
+            this.plContainer.Size = new System.Drawing.Size(197, 90);
             // 
-            // plImage
+            // plLogo
             // 
-            this.plImage.Size = new System.Drawing.Size(181, 111);
+            this.plLogo.Location = new System.Drawing.Point(0, 40);
+            this.plLogo.Padding = new System.Windows.Forms.Padding(20, 10, 20, 10);
+            this.plLogo.Size = new System.Drawing.Size(197, 127);
+            // 
+            // picLogo
+            // 
+            this.picLogo.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("picLogo.BackgroundImage")));
+            this.picLogo.Location = new System.Drawing.Point(20, 10);
+            this.picLogo.Size = new System.Drawing.Size(157, 107);
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.BackColor = System.Drawing.SystemColors.Control;
+            this.lblTitle.Margin = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.lblTitle.Size = new System.Drawing.Size(197, 38);
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(18, 20);
+            this.label1.Location = new System.Drawing.Point(12, 24);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(38, 15);
             this.label1.TabIndex = 0;
@@ -67,37 +76,40 @@
             // 
             // txtIP
             // 
-            this.txtIP.Location = new System.Drawing.Point(62, 17);
+            this.txtIP.Location = new System.Drawing.Point(53, 20);
+            this.txtIP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtIP.Name = "txtIP";
-            this.txtIP.Size = new System.Drawing.Size(105, 25);
+            this.txtIP.Size = new System.Drawing.Size(128, 25);
             this.txtIP.TabIndex = 1;
             // 
             // txtPort
             // 
-            this.txtPort.Location = new System.Drawing.Point(62, 47);
+            this.txtPort.Location = new System.Drawing.Point(53, 48);
+            this.txtPort.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.txtPort.Name = "txtPort";
-            this.txtPort.Size = new System.Drawing.Size(105, 25);
+            this.txtPort.Size = new System.Drawing.Size(128, 25);
             this.txtPort.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(18, 50);
+            this.label2.Location = new System.Drawing.Point(12, 52);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(54, 15);
             this.label2.TabIndex = 2;
-            this.label2.Text = "PORT：";
+            this.label2.Text = "Port：";
             // 
             // Card2Uc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Name = "Card2Uc";
-            this.Size = new System.Drawing.Size(189, 232);
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
+            this.Size = new System.Drawing.Size(205, 265);
+            this.OnRemoveCard += new UserControlSamples.UI.UserControls.BaseCardUc.RemoveCardHandler(this.RobotCardUc_OnRemoveCard);
             this.plContainer.ResumeLayout(false);
             this.plContainer.PerformLayout();
-            this.plImage.ResumeLayout(false);
+            this.plLogo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
 
         }

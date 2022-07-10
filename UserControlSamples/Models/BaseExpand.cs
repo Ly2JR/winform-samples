@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserControlSamples.Models
 {
-    public class BaseGroupBox
+    public class BaseExpand
     {
         /// <summary>
         /// True:展开
@@ -19,9 +19,14 @@ namespace UserControlSamples.Models
         /// </summary>
         public int OrginHeight { get; set; }
 
-        public BaseGroupBox() { }
+        /// <summary>
+        /// 展开高度
+        /// </summary>
+        public int ExpandHeight { get; set; }
 
-        public BaseGroupBox(bool expand, int orginHeight)
+        public BaseExpand() { }
+
+        public BaseExpand(bool expand, int orginHeight)
         {
             this.Expand = expand;
             this.OrginHeight = orginHeight;
