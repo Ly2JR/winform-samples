@@ -11,5 +11,10 @@ namespace UserControlSamples.Models
         public ProjectSetKey Key { get; set; }
 
         public string Tag { get; set; }
+
+        /// <summary>
+        /// 是否继续
+        /// </summary>
+        public bool Continute { get; set; }
     }
 }

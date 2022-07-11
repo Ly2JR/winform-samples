@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace UserControlSamples.UI
 {
-    public partial class FrmCardManager : Form
+    public partial class FrmManager : Form
     {
-        public FrmCardManager()
+        public FrmManager()
         {
             InitializeComponent();
         }

@@ -11,7 +11,7 @@ namespace UserControlSamples
     {
         public void ShowDialog()
         {
-            var card = new FrmCardManager();
+            var card = new FrmManager();
             card.ShowDialog();
         }
     }

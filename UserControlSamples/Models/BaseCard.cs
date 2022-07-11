@@ -26,6 +26,13 @@ namespace UserControlSamples.Models
 
         public bool Continute { get; set; }
 
+        /// <summary>
+        /// 数据来源
+        /// 0:新增
+        /// 1:从数据库加载
+        /// </summary>
+        public int DataSource { get; set; }
+
         public override string ToString()
         {
             return Key.ToString();

@@ -24,10 +24,6 @@ namespace UserControlSamples.UI.UserControls
 
         protected IDictionary<string, string> Items { get; set; }
 
-        public string Key { get { return CurrentCard.ToString(); } }
-
-        protected int DataType { get; private set; } = 0;
-
         public BaseCardUc()
         {
             InitializeComponent();
@@ -42,9 +38,9 @@ namespace UserControlSamples.UI.UserControls
             if (items != null)
             {
                 this.Items = items;
-                DataType = 1;
+                CurrentCard.DataSource = 1;
             }
-            this.lblTitle.Text = Key;
+            this.lblTitle.Text = CurrentCard.ToString();
         }
 
         /// <summary>
@@ -82,8 +78,8 @@ namespace UserControlSamples.UI.UserControls
 
         public virtual string GetCmdString()
         {
-            if (DataType == 0) return AddCmdString();
-            if (DataType == 1) return ModifyCmdString();
+            if (CurrentCard.DataSource == 0) return AddCmdString();
+            if (CurrentCard.DataSource == 1) return ModifyCmdString();
             return "";
         }
         public virtual string AddCmdString()

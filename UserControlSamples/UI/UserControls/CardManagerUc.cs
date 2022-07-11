@@ -46,7 +46,7 @@ namespace UserControlSamples.UI.UserControls
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardCountProperty)]
         public int CardHeight { get; private set; }
 
-        public BaseExpand Extra { get; set; }
+        public BaseCardExtend Extra { get; set; }
 
         public void ClearAll()
         {
@@ -58,7 +58,7 @@ namespace UserControlSamples.UI.UserControls
         {
             InitializeComponent();
             _cardDics = new Dictionary<ProjectSetKey, BaseCardUc>();
-            Extra = new BaseExpand()
+            Extra = new BaseCardExtend()
             {
                 OrginHeight = this.Height
             };
@@ -98,9 +98,10 @@ namespace UserControlSamples.UI.UserControls
             var flag = false;
             foreach (BaseCardUc item in container.Controls)
             {
-                if (item.Key == deleteUc.Key)
+                if (item.CurrentCard == deleteUc.CurrentCard)
                 {
                     flag = true;
+                    continue;
                 }
                 if (flag)
                 {
@@ -184,6 +185,37 @@ namespace UserControlSamples.UI.UserControls
             AppendContainer(addNew);
         }
 
+        private Point NextCardLocation(int parentWidth, BaseCardUc newCard, int total)
+        {
+            var newHeight = newCard.Height + CardConsts.DefaultPaddingTopBottom;
+            var newWidth = newCard.Width + CardConsts.DefaultPaddingLeft;
+            var maxCols = (parentWidth / newWidth);
+
+            var rowIndex = total / maxCols;
+            var colIndex = total % maxCols;
+
+            var x = colIndex * (newWidth);
+            var y = rowIndex * newHeight;
+
+            if (rowIndex > 0&&colIndex==0)
+            {
+                this.Height += newHeight;
+            }
+            return new Point(x, y);
+        }
+
+        public void SortCard()
+        {
+            var count = 0;
+            foreach (BaseCardUc cardUc in this.plContainer.Controls)
+            {
+                var location = NextCardLocation(plContainer.Width, cardUc, count);
+                cardUc.Location = location;
+                count++;
+            }
+        }
+
+
         private void AppendContainer(BaseCardUc newCard)
         {
             newCard.Parent = plContainer;
@@ -205,9 +237,8 @@ namespace UserControlSamples.UI.UserControls
                 }
                 OnFireRemoveCard(uc);
             };
-            var x = _cardDics.Count * (newCard.Width + CardConsts.DefaultPaddingLeft);
-            newCard.Location = new Point(x, CardConsts.DefaultPaddingTopBottom);
-
+            var newPoint = NextCardLocation(plContainer.Width, newCard, CardCount);
+            newCard.Location = newPoint;
             _cardDics.Add(newCard.CurrentCard.Key, newCard);
             plContainer.Controls.Add(newCard);
             OnFireAddNewCard(newCard);

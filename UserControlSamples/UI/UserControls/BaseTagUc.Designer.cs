@@ -28,36 +28,53 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lblTag = new System.Windows.Forms.Label();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(BaseTagUc));
+            this.plContainer = new System.Windows.Forms.Panel();
+            this.picClose = new System.Windows.Forms.PictureBox();
+            this.plContainer.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picClose)).BeginInit();
             this.SuspendLayout();
             // 
-            // lblTag
+            // plContainer
             // 
-            this.lblTag.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lblTag.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblTag.Location = new System.Drawing.Point(3, 3);
-            this.lblTag.Name = "lblTag";
-            this.lblTag.Size = new System.Drawing.Size(81, 30);
-            this.lblTag.TabIndex = 0;
-            this.lblTag.Text = "TAG";
-            this.lblTag.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.plContainer.Controls.Add(this.picClose);
+            this.plContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plContainer.Location = new System.Drawing.Point(1, 1);
+            this.plContainer.Name = "plContainer";
+            this.plContainer.Size = new System.Drawing.Size(107, 34);
+            this.plContainer.TabIndex = 0;
             // 
-            // TagUc
+            // picClose
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 27F);
+            this.picClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.picClose.BackColor = System.Drawing.Color.Transparent;
+            this.picClose.Image = ((System.Drawing.Image)(resources.GetObject("picClose.Image")));
+            this.picClose.Location = new System.Drawing.Point(89, 3);
+            this.picClose.Name = "picClose";
+            this.picClose.Size = new System.Drawing.Size(16, 16);
+            this.picClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picClose.TabIndex = 0;
+            this.picClose.TabStop = false;
+            this.picClose.Click += new System.EventHandler(this.picClose_Click);
+            // 
+            // BaseTagUc
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.lblTag);
+            this.Controls.Add(this.plContainer);
             this.Font = new System.Drawing.Font("微软雅黑", 10F);
             this.Margin = new System.Windows.Forms.Padding(4);
-            this.Name = "TagUc";
-            this.Padding = new System.Windows.Forms.Padding(3);
-            this.Size = new System.Drawing.Size(87, 36);
+            this.Name = "BaseTagUc";
+            this.Padding = new System.Windows.Forms.Padding(1);
+            this.Size = new System.Drawing.Size(109, 36);
+            this.plContainer.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.picClose)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Label lblTag;
+        protected internal System.Windows.Forms.Panel plContainer;
+        protected internal System.Windows.Forms.PictureBox picClose;
     }
 }

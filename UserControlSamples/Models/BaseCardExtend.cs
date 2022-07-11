@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UserControlSamples.Models
 {
-    public class BaseExpand
+    public class BaseCardExtend
     {
         /// <summary>
         /// True:展开
@@ -24,9 +24,9 @@ namespace UserControlSamples.Models
         /// </summary>
         public int ExpandHeight { get; set; }
 
-        public BaseExpand() { }
+        public BaseCardExtend() { }
 
-        public BaseExpand(bool expand, int orginHeight)
+        public BaseCardExtend(bool expand, int orginHeight)
         {
             this.Expand = expand;
             this.OrginHeight = orginHeight;

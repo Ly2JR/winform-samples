@@ -32,7 +32,7 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CardManagerUc));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.plContainer = new System.Windows.Forms.Panel();
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.plMenuContainer = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbtnAdd = new System.Windows.Forms.ToolStripButton();
             this.tlBtnBatchSave = new System.Windows.Forms.ToolStripButton();
@@ -42,14 +42,14 @@
             this.tlsBtnExpandDown = new System.Windows.Forms.ToolStripButton();
             this.tlsBtnExpandUp = new System.Windows.Forms.ToolStripButton();
             this.groupBox1.SuspendLayout();
-            this.panel1.SuspendLayout();
+            this.plMenuContainer.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.plContainer);
-            this.groupBox1.Controls.Add(this.panel1);
+            this.groupBox1.Controls.Add(this.plMenuContainer);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(4, 4);
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -68,15 +68,15 @@
             this.plContainer.Size = new System.Drawing.Size(468, 3);
             this.plContainer.TabIndex = 1;
             // 
-            // panel1
+            // plMenuContainer
             // 
-            this.panel1.Controls.Add(this.toolStrip1);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 20);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(468, 41);
-            this.panel1.TabIndex = 0;
+            this.plMenuContainer.Controls.Add(this.toolStrip1);
+            this.plMenuContainer.Dock = System.Windows.Forms.DockStyle.Top;
+            this.plMenuContainer.Location = new System.Drawing.Point(3, 20);
+            this.plMenuContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.plMenuContainer.Name = "plMenuContainer";
+            this.plMenuContainer.Size = new System.Drawing.Size(468, 41);
+            this.plMenuContainer.TabIndex = 0;
             // 
             // toolStrip1
             // 
@@ -162,11 +162,11 @@
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "CardManagerUc";
-            this.Padding = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Padding = new System.Windows.Forms.Padding(4);
             this.Size = new System.Drawing.Size(482, 74);
             this.groupBox1.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
+            this.plMenuContainer.ResumeLayout(false);
+            this.plMenuContainer.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -176,7 +176,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Panel plMenuContainer;
         private System.Windows.Forms.Panel plContainer;
         private System.Windows.Forms.ToolStrip toolStrip1;
         private System.Windows.Forms.ToolStripButton tsbtnAdd;

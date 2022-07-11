@@ -46,10 +46,9 @@
             // 
             this.panel1.Controls.Add(this.toolStrip1);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(3, 20);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Location = new System.Drawing.Point(3, 24);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(809, 43);
+            this.panel1.Size = new System.Drawing.Size(911, 52);
             this.panel1.TabIndex = 0;
             // 
             // toolStrip1
@@ -65,7 +64,7 @@
             this.toolStripSeparator2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(809, 31);
+            this.toolStrip1.Size = new System.Drawing.Size(911, 36);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -76,28 +75,28 @@
             this.tsbtnAdd.Image = ((System.Drawing.Image)(resources.GetObject("tsbtnAdd.Image")));
             this.tsbtnAdd.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbtnAdd.Name = "tsbtnAdd";
-            this.tsbtnAdd.Size = new System.Drawing.Size(72, 28);
+            this.tsbtnAdd.Size = new System.Drawing.Size(80, 31);
             this.tsbtnAdd.Text = "添加";
             this.tsbtnAdd.Click += new System.EventHandler(this.tsbtnAdd_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 36);
             // 
             // tlBtnClear
             // 
             this.tlBtnClear.Image = ((System.Drawing.Image)(resources.GetObject("tlBtnClear.Image")));
             this.tlBtnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tlBtnClear.Name = "tlBtnClear";
-            this.tlBtnClear.Size = new System.Drawing.Size(72, 28);
+            this.tlBtnClear.Size = new System.Drawing.Size(80, 31);
             this.tlBtnClear.Text = "清空";
             this.tlBtnClear.Click += new System.EventHandler(this.tlBtnClear_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 31);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 36);
             // 
             // groupBox1
             // 
@@ -105,30 +104,26 @@
             this.groupBox1.Controls.Add(this.panel1);
             this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox1.Location = new System.Drawing.Point(0, 0);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(815, 145);
+            this.groupBox1.Size = new System.Drawing.Size(917, 174);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
             // plContainer
             // 
             this.plContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plContainer.Location = new System.Drawing.Point(3, 63);
-            this.plContainer.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.plContainer.Location = new System.Drawing.Point(3, 76);
             this.plContainer.Name = "plContainer";
-            this.plContainer.Size = new System.Drawing.Size(809, 80);
+            this.plContainer.Size = new System.Drawing.Size(911, 95);
             this.plContainer.TabIndex = 1;
             // 
-            // TagManagerUc
+            // TagManager
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.groupBox1);
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.Name = "TagManagerUc";
-            this.Size = new System.Drawing.Size(815, 145);
+            this.Name = "TagManager";
+            this.Size = new System.Drawing.Size(917, 174);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
