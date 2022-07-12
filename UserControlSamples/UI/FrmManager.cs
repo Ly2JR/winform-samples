@@ -16,5 +16,29 @@ namespace UserControlSamples.UI
         {
             InitializeComponent();
         }
+        FormWindowState tempWindowState;
+        private void FrmManager_Shown(object sender, EventArgs e)
+        {
+            //从数据库加载控件
+            //cardManagerUc1.LoadCard();
+            //cardManagerUc2.LoadCard();
+            //tagManagerUc1.LoadTag();
+        }
+
+        private void FrmManager_SizeChanged(object sender, EventArgs e)
+        {
+            if (tempWindowState != FormWindowState.Maximized && this.WindowState == FormWindowState.Maximized)
+            {
+                tempWindowState = FormWindowState.Maximized;
+                cardManagerUc1.RefreshLayout();
+                //tagManagerUc1.RefreshLayout();
+            }
+            else if (tempWindowState == FormWindowState.Maximized && this.WindowState == FormWindowState.Normal)
+            {
+                tempWindowState = FormWindowState.Normal;
+                cardManagerUc1.RefreshLayout();
+                //tagManagerUc1.RefreshLayout();
+            }
+        }
     }
 }

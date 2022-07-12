@@ -18,7 +18,7 @@ namespace UserControlSamples.UI.UserControls
         {
             InitializeComponent();
 
-            CurrentTag = new BaseTag();
+            Key = new ProjectSetKey();
             Extra = new BaseTagExtend();
         }
 
@@ -28,20 +28,20 @@ namespace UserControlSamples.UI.UserControls
         public event TagWidthChangedHandler OnTagWidthChanged;
 
 
-        public delegate void CloseTagHandler(BaseTagUc obj, BaseTag tag);
+        public delegate void CloseTagHandler(BaseTagUc obj);
 
         [Category(TagConsts.Name), Description(TagConsts.CloseTagEvent)]
         public event CloseTagHandler OnCloseTag;
 
         [Category(TagConsts.Name), Description(TagConsts.TagProperty)]
-        public BaseTag CurrentTag { get; private set; }
+        public ProjectSetKey Key { get; private set; }
 
         private bool _hiddenClose = TagConsts.DefaultHiddenClose;
 
         protected void TagChanged(string tag)
         {
             this.Extra.OldWidth = Width;
-            CurrentTag.Tag = tag;
+            Extra.Tag = tag;
             var calcWidth = GetStringLength(tag) + picClose.Width + 8;
             if (calcWidth < this.Width)
             {
@@ -72,10 +72,10 @@ namespace UserControlSamples.UI.UserControls
 
         public BaseTagUc(ProjectSetKey key, string tag = null) : this()
         {
-            CurrentTag.Key = key;
+            Key = key;
             if (!string.IsNullOrEmpty(tag))
             {
-                CurrentTag.Tag = tag;
+                Extra.Tag = tag;
                 Extra.DataSource = 1;
             }
         }
@@ -105,19 +105,19 @@ namespace UserControlSamples.UI.UserControls
         {
             if (OnCloseTag != null)
             {
-                OnCloseTag(this, CurrentTag);
+                OnCloseTag(this);
             }
         }
 
         public virtual string AddCmdString()
         {
-            return GetAddCmdString(CurrentTag.Tag);
+            return GetAddCmdString(Extra.Tag);
         }
 
 
         public virtual string ModifyCmdString()
         {
-            return GetModifyCmdString(CurrentTag.Tag);
+            return GetModifyCmdString(Extra.Tag);
         }
 
         public virtual string DeleteCmdString()
@@ -127,22 +127,22 @@ namespace UserControlSamples.UI.UserControls
 
         protected string GetLoadCmdString()
         {
-            return $"SELECT {DataBaseConsts.TypeColumn},{DataBaseConsts.SnColumn},{DataBaseConsts.NameColumn},{DataBaseConsts.ValueColumn} FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentTag.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentTag.Key.Sn})";
+            return $"SELECT {DataBaseConsts.TypeColumn},{DataBaseConsts.SnColumn},{DataBaseConsts.NameColumn},{DataBaseConsts.ValueColumn} FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn})";
         }
 
         protected string GetAddCmdString(string name)
         {
-            return $"INSERT INTO {DataBaseConsts.TableName}(project_type,unit_sn,unit_name) values ('{CurrentTag.Key.Type}',{CurrentTag.Key.Sn},'{name}');";
+            return $"INSERT INTO {DataBaseConsts.TableName}(project_type,unit_sn,unit_name) values ('{Key.Type}',{Key.Sn},'{name}');";
         }
 
         protected string GetModifyCmdString(string name)
         {
-            return $"UPDATE {DataBaseConsts.TableName} SET {DataBaseConsts.NameColumn}='{name}' WHERE {DataBaseConsts.TypeColumn}='{CurrentTag.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentTag.Key.Sn};";
+            return $"UPDATE {DataBaseConsts.TableName} SET {DataBaseConsts.NameColumn}='{name}' WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn};";
         }
 
         protected string GetDeleteCmdString()
         {
-            return $"DELETE FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentTag.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentTag.Key.Sn};";
+            return $"DELETE FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn};";
         }
 
         protected void SaveData(string name)

@@ -14,33 +14,38 @@ namespace UserControlSamples.UI.UserControls
 {
     public partial class BaseCardUc : UserControl
     {
-        public delegate void RemoveCardHandler(BaseCardUc obj, BaseCard currentCard);
+        public delegate void RemoveCardHandler(BaseCardUc obj);
 
         [Category(CardConsts.Name), Description(CardConsts.RemoveCardEvent)]
         public event RemoveCardHandler OnRemoveCard;
 
         [Category(CardConsts.Name), Description(CardConsts.CardPrimaryKeyProperty)]
-        public BaseCard CurrentCard { get; private set; }
+        public ProjectSetKey Key { get; private set; }
+
+        [Category(CardConsts.Name), Description(CardConsts.CardPrimaryKeyProperty)]
+
+        public BaseCardExtend Extra { get; set; }
 
         protected IDictionary<string, string> Items { get; set; }
 
         public BaseCardUc()
         {
             InitializeComponent();
-            CurrentCard = new BaseCard();
+            Key = new ProjectSetKey();
             Items = new Dictionary<string, string>();
+            Extra = new BaseCardExtend();
         }
 
         public BaseCardUc(string type, int sn, IDictionary<string, string> items = null) : this()
         {
-            CurrentCard.Key.Type = type;
-            CurrentCard.Key.Sn = sn;
+            Key.Type = type;
+            Key.Sn = sn;
             if (items != null)
             {
                 this.Items = items;
-                CurrentCard.DataSource = 1;
+                Extra.DataSource = 1;
             }
-            this.lblTitle.Text = CurrentCard.ToString();
+            this.lblTitle.Text = Key.ToString();
         }
 
         /// <summary>
@@ -78,8 +83,8 @@ namespace UserControlSamples.UI.UserControls
 
         public virtual string GetCmdString()
         {
-            if (CurrentCard.DataSource == 0) return AddCmdString();
-            if (CurrentCard.DataSource == 1) return ModifyCmdString();
+            if (Extra.DataSource == 0) return AddCmdString();
+            if (Extra.DataSource == 1) return ModifyCmdString();
             return "";
         }
         public virtual string AddCmdString()
@@ -112,22 +117,22 @@ namespace UserControlSamples.UI.UserControls
 
         protected string GetLoadCmdString()
         {
-            return $"SELECT {DataBaseConsts.TypeColumn},{DataBaseConsts.SnColumn},{DataBaseConsts.NameColumn},{DataBaseConsts.ValueColumn} FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn})";
+            return $"SELECT {DataBaseConsts.TypeColumn},{DataBaseConsts.SnColumn},{DataBaseConsts.NameColumn},{DataBaseConsts.ValueColumn} FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn})";
         }
 
         protected string GetAddCmdString(string name, string value)
         {
-            return $"INSERT INTO {DataBaseConsts.TableName}(project_type,unit_sn,unit_name,unit_value) values ('{CurrentCard.Key.Type}',{CurrentCard.Key.Sn},'{name}','{value}');";
+            return $"INSERT INTO {DataBaseConsts.TableName}(project_type,unit_sn,unit_name,unit_value) values ('{Key.Type}',{Key.Sn},'{name}','{value}');";
         }
 
         protected string GetModifyCmdString(string name, string value)
         {
-            return $"UPDATE {DataBaseConsts.TableName} SET {DataBaseConsts.ValueColumn}='{value}' WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn} AND {DataBaseConsts.NameColumn}='{name}';";
+            return $"UPDATE {DataBaseConsts.TableName} SET {DataBaseConsts.ValueColumn}='{value}' WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn} AND {DataBaseConsts.NameColumn}='{name}';";
         }
 
         protected string GetDeleteCmdString()
         {
-            return $"DELETE FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{CurrentCard.Key.Type}' AND {DataBaseConsts.SnColumn}={CurrentCard.Key.Sn};";
+            return $"DELETE FROM {DataBaseConsts.TableName} WHERE {DataBaseConsts.TypeColumn}='{Key.Type}' AND {DataBaseConsts.SnColumn}={Key.Sn};";
         }
 
         protected void SaveData(string name, string value)
@@ -155,7 +160,7 @@ namespace UserControlSamples.UI.UserControls
         {
             if (OnRemoveCard != null)
             {
-                OnRemoveCard(this, CurrentCard);
+                OnRemoveCard(this);
             }
         }
 

@@ -159,18 +159,18 @@ namespace UserControlSamples.UI.UserControls
         private void AppendContainer(BaseTagUc newTag)
         {
             newTag.Parent = plContainer;
-            if (_tagDics.ContainsKey(newTag.CurrentTag.Key))
+            if (_tagDics.ContainsKey(newTag.Key))
             {
-                MessageBox.Show($"编号{newTag.CurrentTag.Key.Sn}重复", "提示");
+                MessageBox.Show($"编号{newTag.Key.Sn}重复", "提示");
                 return;
             }
-            newTag.OnCloseTag += (obj, currentTag) =>
+            newTag.OnCloseTag += (obj) =>
             {
-                if (!currentTag.Continute) return;
-                var ret = _tagDics.ContainsKey(currentTag.Key);
+                if (!obj.Extra.Continute) return;
+                var ret = _tagDics.ContainsKey(obj.Key);
                 if (!ret) return;
-                var uc = _tagDics[currentTag.Key];
-                ret = _tagDics.Remove(currentTag.Key);
+                var uc = _tagDics[obj.Key];
+                ret = _tagDics.Remove(obj.Key);
                 if (ret)
                 {
                     ResizeContainer(plContainer, uc);
@@ -185,7 +185,7 @@ namespace UserControlSamples.UI.UserControls
             var x = GetNextTagLocationX(newTag);
             newTag.Location = new Point(x, TagConsts.DefaultPaddingTopBottom);
 
-            _tagDics.Add(newTag.CurrentTag.Key, newTag);
+            _tagDics.Add(newTag.Key, newTag);
             plContainer.Controls.Add(newTag);
             OnFireAddNewCard(newTag);
             if (CurrentTagEnum == TagEnum.TextTag)
@@ -228,7 +228,7 @@ namespace UserControlSamples.UI.UserControls
             var flag = false;
             foreach (BaseTagUc item in container.Controls)
             {
-                if (item.CurrentTag == deleteUc.CurrentTag)
+                if (item.Key == deleteUc.Key)
                 {
                     flag = true;
                     continue;

@@ -45,11 +45,11 @@ namespace UserControlSamples.UI.UserControls
             HiddenClose = string.IsNullOrEmpty(tag);
         }
 
-        private void TextTagUc_OnCloseTag(BaseTagUc obj, BaseTag tag)
+        private void TextTagUc_OnCloseTag(BaseTagUc obj)
         {
-            var dialog = MessageBox.Show($"确定删除标签[{tag.Tag}]?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            var dialog = MessageBox.Show($"确定删除标签[{obj.Extra.Tag}]?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (dialog != DialogResult.OK) return;
-            tag.Continute = true;
+            obj.Extra.Continute = true;
             Clear();
         }
 

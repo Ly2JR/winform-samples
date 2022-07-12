@@ -53,10 +53,10 @@
     <Compile Include="Consts\TagManagerConsts.cs" />
     <Compile Include="Consts\TextTagConsts.cs" />
     <Compile Include="Facade.cs" />
-    <Compile Include="Models\BaseTag.cs" />
     <Compile Include="Models\BaseTagExtend.cs" />
+    <Compile Include="Models\CardEnum.cs" />
+    <Compile Include="Models\CardManagerExtend.cs" />
     <Compile Include="Models\ProjectSetKey.cs" />
-    <Compile Include="Models\BaseCard.cs" />
     <Compile Include="Models\BaseCardExtend.cs" />
     <Compile Include="Models\TagEnum.cs" />
     <Compile Include="Models\TagSourceEnum.cs" />

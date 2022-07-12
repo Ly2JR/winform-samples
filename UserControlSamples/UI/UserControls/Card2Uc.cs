@@ -52,11 +52,11 @@ namespace UserControlSamples.UI.UserControls
             
         }
 
-        private void RobotCardUc_OnRemoveCard(BaseCardUc obj, Models.BaseCard currentCard)
+        private void RobotCardUc_OnRemoveCard(BaseCardUc obj)
         {
-            var dialog = MessageBox.Show($"确定删除{CurrentCard}?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            var dialog = MessageBox.Show($"确定删除{obj.Key}?", "提示", MessageBoxButtons.OKCancel, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
             if (dialog != DialogResult.OK) return;
-            currentCard.Continute = true;
+            obj.Extra.Continute = true;
             Clear();
         }
     }

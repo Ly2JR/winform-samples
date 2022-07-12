@@ -17,6 +17,10 @@ namespace UserControlSamples.UI.UserControls
         public delegate void OnCardChangedHandler(CardManagerUc obj, BaseCardUc uc);
         public delegate void OnCardManagerButtonHandler(CardManagerUc obj, string buttonKey);
 
+        private readonly IDictionary<ProjectSetKey, BaseCardUc> _cardDics;
+        private int _maxCardCount = CardManagerConsts.DefaultMaxCardCount;
+        private CardEnum _currentCardEnum = CardConsts.DefaultCardEnum;
+
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.AddNewCardEvent)]
         public event OnCardChangedHandler OnAddNewCard;
 
@@ -25,9 +29,6 @@ namespace UserControlSamples.UI.UserControls
 
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.RemoveCardEvent)]
         public event OnCardChangedHandler OnRemoveCard;
-
-        private readonly IDictionary<ProjectSetKey, BaseCardUc> _cardDics;
-        private int _maxCardCount = CardManagerConsts.DefaultMaxCardCount;
 
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.AllowedMaxCardCountProperty), DefaultValue(CardManagerConsts.DefaultMaxCardCount)]
         public int MaxCardCount
@@ -43,30 +44,17 @@ namespace UserControlSamples.UI.UserControls
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardCountProperty)]
         public int CardCount { get { return _cardDics.Count; } }
 
-        [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardCountProperty)]
+        [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardHeightProperty)]
         public int CardHeight { get; private set; }
 
-        public BaseCardExtend Extra { get; set; }
+        [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardWidthProperty)]
+        public int CardWidth { get; private set; }
 
-        public void ClearAll()
-        {
-            _cardDics.Clear();
-            plContainer.Controls.Clear();
-        }
+        [Category(CardManagerConsts.Name), Description(CardManagerConsts.ContainerSizeChanged)]
+        public bool ContainerSizeChanged { get; private set; }
 
-        public CardManagerUc()
-        {
-            InitializeComponent();
-            _cardDics = new Dictionary<ProjectSetKey, BaseCardUc>();
-            Extra = new BaseCardExtend()
-            {
-                OrginHeight = this.Height
-            };
-        }
-
-
-
-        private CardEnum _currentCardEnum = CardConsts.DefaultCardEnum;
+        [Category(CardManagerConsts.Name), Description(CardManagerConsts.ContainerSizeChanged)]
+        public CardManagerExtend Extra { get; set; }
 
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardTypeProperty), DefaultValue(CardConsts.DefaultCardEnum)]
         public CardEnum CurrentCardEnum
@@ -79,10 +67,25 @@ namespace UserControlSamples.UI.UserControls
             }
         }
 
+        public void ClearAll()
+        {
+            _cardDics.Clear();
+            plContainer.Controls.Clear();
+        }
+
+        public CardManagerUc()
+        {
+            InitializeComponent();
+            _cardDics = new Dictionary<ProjectSetKey, BaseCardUc>();
+            Extra = new CardManagerExtend()
+            {
+                OldHeight = this.Height
+            };
+        }
+
         private void tsbtnAdd_Click(object sender, EventArgs e)
         {
             CreateCard();
-            Expand(this, CardManagerConsts.AddButtonKey);
             OnFireButtonClick(CardManagerConsts.AddButtonKey);
         }
 
@@ -98,14 +101,30 @@ namespace UserControlSamples.UI.UserControls
             var flag = false;
             foreach (BaseCardUc item in container.Controls)
             {
-                if (item.CurrentCard == deleteUc.CurrentCard)
+                if (item.Key == deleteUc.Key)
                 {
                     flag = true;
                     continue;
                 }
                 if (flag)
                 {
-                    item.Left -= (item.Width + CardConsts.DefaultPaddingLeft);
+                    var removeWidth = deleteUc.Width + CardConsts.DefaultPaddingLeft;
+                    var removeHeight = deleteUc.Height + CardConsts.DefaultPaddingTop;
+                    item.Left -= removeWidth;
+
+                    if (item.Extra.RowIndex > deleteUc.Extra.RowIndex)
+                    {
+                        if (item.Extra.ColIndex == 0)
+                        {
+                            if (item.Left < 0)//上移到最后一个
+                            {
+                                item.Extra.RowIndex = deleteUc.Extra.RowIndex;
+                                item.Left = (Extra.Cols - 1) * removeWidth;
+                            }
+                            item.Top -= removeHeight;
+                        }
+                    }
+                    item.Extra.ColIndex--;
                 }
             }
             container.Controls.Remove(deleteUc);
@@ -185,61 +204,74 @@ namespace UserControlSamples.UI.UserControls
             AppendContainer(addNew);
         }
 
-        private Point NextCardLocation(int parentWidth, BaseCardUc newCard, int total)
+        private Point NextCardLocation(Control parent, BaseCardUc newCard, int total)
         {
-            var newHeight = newCard.Height + CardConsts.DefaultPaddingTopBottom;
-            var newWidth = newCard.Width + CardConsts.DefaultPaddingLeft;
-            var maxCols = (parentWidth / newWidth);
+            var nextHeight = newCard.Height + CardConsts.DefaultPaddingTop;
+            var nextWidth = newCard.Width + CardConsts.DefaultPaddingLeft;
 
-            var rowIndex = total / maxCols;
-            var colIndex = total % maxCols;
+            var maxCols = parent.Width / nextWidth;
+            var maxRows = total / maxCols;
 
-            var x = colIndex * (newWidth);
-            var y = rowIndex * newHeight;
+            var nextRow = maxRows + 1;
+            var nextCol = total % maxCols;
 
-            if (rowIndex > 0&&colIndex==0)
+            var nextX = nextCol * nextWidth;
+            var nextY = maxRows * nextHeight;
+
+            //放大
+            if (maxRows >= 0 && nextCol == 0)
             {
-                this.Height += newHeight;
+                if (parent.Height < nextRow * nextHeight)
+                {
+                    Height += nextHeight;
+                    if (Extra.OldHeight == 0)
+                    {
+                        Extra.OldHeight = Height;
+                    }
+                    Extra.Expand = true;
+                }
             }
-            return new Point(x, y);
-        }
-
-        public void SortCard()
-        {
-            var count = 0;
-            foreach (BaseCardUc cardUc in this.plContainer.Controls)
+            ContainerSizeChanged = false;
+            if (Extra.Cols > 0 && Extra.Cols != maxCols)
             {
-                var location = NextCardLocation(plContainer.Width, cardUc, count);
-                cardUc.Location = location;
-                count++;
+                Height = Extra.OldHeight + nextRow * nextHeight;
+                ContainerSizeChanged = true;
             }
+            Extra.Rows = nextRow;
+            Extra.Cols = maxCols;
+            Extra.NewHeight = Height;
+            newCard.Extra.RowIndex = nextRow;
+            newCard.Extra.ColIndex = nextCol;
+            return new Point(nextX, nextY);
         }
 
 
         private void AppendContainer(BaseCardUc newCard)
         {
-            newCard.Parent = plContainer;
-            if (_cardDics.ContainsKey(newCard.CurrentCard.Key))
+            if (_cardDics.ContainsKey(newCard.Key))
             {
-                MessageBox.Show($"编号{newCard.CurrentCard.Key.Sn}重复", "提示");
+                MessageBox.Show($"编号{newCard.Key.Sn}重复", "提示");
                 return;
             }
-            newCard.OnRemoveCard += (obj, currentCard) =>
+            newCard.OnRemoveCard += (obj) =>
             {
-                if (!currentCard.Continute) return;
-                var ret = _cardDics.ContainsKey(currentCard.Key);
+                if (!obj.Extra.Continute) return;
+                var ret = _cardDics.ContainsKey(obj.Key);
                 if (!ret) return;
-                var uc = _cardDics[currentCard.Key];
-                ret = _cardDics.Remove(currentCard.Key);
+                var uc = _cardDics[obj.Key];
+                ret = _cardDics.Remove(obj.Key);
                 if (ret)
                 {
                     ResizeContainer(plContainer, uc);
                 }
                 OnFireRemoveCard(uc);
             };
-            var newPoint = NextCardLocation(plContainer.Width, newCard, CardCount);
+            var newPoint = NextCardLocation(this, newCard, CardCount);
             newCard.Location = newPoint;
-            _cardDics.Add(newCard.CurrentCard.Key, newCard);
+            newCard.Parent = plContainer;
+            CardHeight = newCard.Height;
+            CardWidth = newCard.Width;
+            _cardDics.Add(newCard.Key, newCard);
             plContainer.Controls.Add(newCard);
             OnFireAddNewCard(newCard);
         }
@@ -327,11 +359,9 @@ namespace UserControlSamples.UI.UserControls
             {
                 case CardEnum.Card1:
                     addNew = new Card1Uc(sn, items);
-                    CardHeight = addNew.Height;
                     break;
                 case CardEnum.Card2:
                     addNew = new Card2Uc(sn, items);
-                    CardHeight = addNew.Height;
                     break;
             }
             return addNew;
@@ -364,6 +394,19 @@ namespace UserControlSamples.UI.UserControls
 
         }
 
+        public void RefreshLayout()
+        {
+            ContainerSizeChanged = true;
+            if (!Extra.Expand) return;
+            var index = 0;
+            foreach (BaseCardUc item in plContainer.Controls)
+            {
+                var newPoint = NextCardLocation(this, item, index);
+                item.Location = newPoint;
+                index++;
+            }
+        }
+
         private void Expand(CardManagerUc obj, string buttonKey)
         {
             switch (buttonKey)
@@ -378,24 +421,21 @@ namespace UserControlSamples.UI.UserControls
                     if (!obj.Extra.Expand || obj.CardCount == 0) return;
                     break;
             }
-            if (obj.Extra.Expand)
+            var height = obj.Extra.Rows * (obj.CardHeight + CardConsts.DefaultPaddingTop);
+            if (obj.Extra.Expand) //折叠
             {
-                obj.Height = obj.Extra.OrginHeight;
+                Height -= height;
                 obj.Extra.Expand = false;
             }
-            else
+            else //展开
             {
-                if (obj.Extra.ExpandHeight == 0)
-                {
-                    obj.Extra.OrginHeight = obj.Height;
-                    obj.Height = obj.Height + obj.CardHeight + CardConsts.DefaultPaddingTopBottom * 2;
-                    obj.Extra.ExpandHeight = obj.Height;
-                }
-                else
-                {
-                    obj.Height = obj.Extra.ExpandHeight;
-                }
+                Height += height;
                 obj.Extra.Expand = true;
+            }
+            obj.plContainer.Visible = obj.Extra.Expand;
+            if (ContainerSizeChanged)
+            {
+                RefreshLayout();
             }
         }
     }
