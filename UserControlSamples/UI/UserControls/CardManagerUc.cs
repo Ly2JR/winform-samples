@@ -209,39 +209,28 @@ namespace UserControlSamples.UI.UserControls
             var nextHeight = newCard.Height + CardConsts.DefaultPaddingTop;
             var nextWidth = newCard.Width + CardConsts.DefaultPaddingLeft;
 
-            var maxCols = parent.Width / nextWidth;
-            var maxRows = total / maxCols;
+            var items=_cardDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+            var count = items.Count();
+            var existWidth = count * CardConsts.DefaultPaddingLeft + items.Sum(o => o.Width);
 
-            var nextRow = maxRows + 1;
-            var nextCol = total % maxCols;
+            var nextX = existWidth+CardConsts.DefaultPaddingLeft;
+            var nextY = Extra.Rows * nextHeight;
 
-            var nextX = nextCol * nextWidth;
-            var nextY = maxRows * nextHeight;
-
-            //放大
-            if (maxRows >= 0 && nextCol == 0)
+            Extra.Cols++;
+            if (parent.Width < existWidth + nextWidth) //超出边界
             {
-                if (parent.Height < nextRow * nextHeight)
-                {
-                    Height += nextHeight;
-                    if (Extra.OldHeight == 0)
-                    {
-                        Extra.OldHeight = Height;
-                    }
-                    Extra.Expand = true;
-                }
+                Extra.Cols = 0;
+                Extra.Rows++;
+                items = _cardDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+                count = items.Count();
+                existWidth = count * CardConsts.DefaultPaddingLeft + items.Sum(o => o.Width);
+                nextX= existWidth + CardConsts.DefaultPaddingLeft;
+                nextY = Extra.Rows * nextHeight;
+                Height += nextHeight;
             }
-            ContainerSizeChanged = false;
-            if (Extra.Cols > 0 && Extra.Cols != maxCols)
-            {
-                Height = Extra.OldHeight + nextRow * nextHeight;
-                ContainerSizeChanged = true;
-            }
-            Extra.Rows = nextRow;
-            Extra.Cols = maxCols;
-            Extra.NewHeight = Height;
-            newCard.Extra.RowIndex = nextRow;
-            newCard.Extra.ColIndex = nextCol;
+            
+            newCard.Extra.RowIndex = Extra.Rows;
+            newCard.Extra.ColIndex = Extra.Cols;
             return new Point(nextX, nextY);
         }
 
@@ -266,12 +255,12 @@ namespace UserControlSamples.UI.UserControls
                 }
                 OnFireRemoveCard(uc);
             };
-            var newPoint = NextCardLocation(this, newCard, CardCount);
+            var newPoint = NextCardLocation(plContainer, newCard, CardCount);
             newCard.Location = newPoint;
-            newCard.Parent = plContainer;
             CardHeight = newCard.Height;
             CardWidth = newCard.Width;
             _cardDics.Add(newCard.Key, newCard);
+            newCard.Parent = plContainer;
             plContainer.Controls.Add(newCard);
             OnFireAddNewCard(newCard);
         }
@@ -401,7 +390,7 @@ namespace UserControlSamples.UI.UserControls
             var index = 0;
             foreach (BaseCardUc item in plContainer.Controls)
             {
-                var newPoint = NextCardLocation(this, item, index);
+                var newPoint = NextCardLocation(plContainer, item, index);
                 item.Location = newPoint;
                 index++;
             }

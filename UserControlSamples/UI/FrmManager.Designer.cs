@@ -39,14 +39,13 @@
             cardManagerExtend1.Cols = 0;
             cardManagerExtend1.Expand = false;
             cardManagerExtend1.NewHeight = 0;
-            cardManagerExtend1.OldHeight = 70;
+            cardManagerExtend1.OldHeight = 294;
             cardManagerExtend1.Rows = 0;
             this.cardManagerUc1.Extra = cardManagerExtend1;
             this.cardManagerUc1.Location = new System.Drawing.Point(0, 0);
-            this.cardManagerUc1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.cardManagerUc1.Name = "cardManagerUc1";
             this.cardManagerUc1.Padding = new System.Windows.Forms.Padding(4);
-            this.cardManagerUc1.Size = new System.Drawing.Size(800, 70);
+            this.cardManagerUc1.Size = new System.Drawing.Size(800, 361);
             this.cardManagerUc1.TabIndex = 0;
             // 
             // FrmManager
