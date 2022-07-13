@@ -31,6 +31,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CardManagerUc));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.plContainer = new System.Windows.Forms.Panel();
+            this.lblSp = new System.Windows.Forms.Label();
             this.plMenuContainer = new System.Windows.Forms.Panel();
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
             this.tsbtnAdd = new System.Windows.Forms.ToolStripButton();
@@ -40,8 +42,6 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.tlsBtnExpandDown = new System.Windows.Forms.ToolStripButton();
             this.tlsBtnExpandUp = new System.Windows.Forms.ToolStripButton();
-            this.lblSp = new System.Windows.Forms.Label();
-            this.plContainer = new System.Windows.Forms.Panel();
             this.groupBox1.SuspendLayout();
             this.plMenuContainer.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -57,9 +57,26 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.groupBox1.Size = new System.Drawing.Size(474, 286);
+            this.groupBox1.Size = new System.Drawing.Size(474, 68);
             this.groupBox1.TabIndex = 0;
             this.groupBox1.TabStop = false;
+            // 
+            // plContainer
+            // 
+            this.plContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.plContainer.Location = new System.Drawing.Point(3, 65);
+            this.plContainer.Name = "plContainer";
+            this.plContainer.Size = new System.Drawing.Size(468, 1);
+            this.plContainer.TabIndex = 0;
+            // 
+            // lblSp
+            // 
+            this.lblSp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.lblSp.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblSp.Location = new System.Drawing.Point(3, 63);
+            this.lblSp.Name = "lblSp";
+            this.lblSp.Size = new System.Drawing.Size(468, 2);
+            this.lblSp.TabIndex = 0;
             // 
             // plMenuContainer
             // 
@@ -89,8 +106,7 @@
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(468, 43);
-            this.toolStrip1.TabIndex = 5;
-            this.toolStrip1.Text = "toolStrip1";
+            this.toolStrip1.TabIndex = 0;
             // 
             // tsbtnAdd
             // 
@@ -148,23 +164,6 @@
             this.tlsBtnExpandUp.Text = "折叠";
             this.tlsBtnExpandUp.Click += new System.EventHandler(this.tlsBtnExpandUp_Click);
             // 
-            // lblSp
-            // 
-            this.lblSp.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.lblSp.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblSp.Location = new System.Drawing.Point(3, 63);
-            this.lblSp.Name = "lblSp";
-            this.lblSp.Size = new System.Drawing.Size(468, 2);
-            this.lblSp.TabIndex = 1;
-            // 
-            // plContainer
-            // 
-            this.plContainer.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.plContainer.Location = new System.Drawing.Point(3, 65);
-            this.plContainer.Name = "plContainer";
-            this.plContainer.Size = new System.Drawing.Size(468, 219);
-            this.plContainer.TabIndex = 2;
-            // 
             // CardManagerUc
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
@@ -173,7 +172,7 @@
             this.DoubleBuffered = true;
             this.Name = "CardManagerUc";
             this.Padding = new System.Windows.Forms.Padding(4);
-            this.Size = new System.Drawing.Size(482, 294);
+            this.Size = new System.Drawing.Size(482, 76);
             this.groupBox1.ResumeLayout(false);
             this.plMenuContainer.ResumeLayout(false);
             this.plMenuContainer.PerformLayout();

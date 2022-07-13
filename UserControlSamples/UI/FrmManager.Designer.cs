@@ -28,25 +28,30 @@
         /// </summary>
         private void InitializeComponent()
         {
-            UserControlSamples.Models.CardManagerExtend cardManagerExtend1 = new UserControlSamples.Models.CardManagerExtend();
             this.cardManagerUc1 = new UserControlSamples.UI.UserControls.CardManagerUc();
+            this.tagManagerUc1 = new UserControlSamples.UI.UserControls.TagManagerUc();
             this.SuspendLayout();
             // 
             // cardManagerUc1
             // 
             this.cardManagerUc1.CurrentCardEnum = UserControlSamples.Models.CardEnum.Card1;
             this.cardManagerUc1.Dock = System.Windows.Forms.DockStyle.Top;
-            cardManagerExtend1.Cols = 0;
-            cardManagerExtend1.Expand = false;
-            cardManagerExtend1.NewHeight = 0;
-            cardManagerExtend1.OldHeight = 294;
-            cardManagerExtend1.Rows = 0;
-            this.cardManagerUc1.Extra = cardManagerExtend1;
             this.cardManagerUc1.Location = new System.Drawing.Point(0, 0);
             this.cardManagerUc1.Name = "cardManagerUc1";
             this.cardManagerUc1.Padding = new System.Windows.Forms.Padding(4);
-            this.cardManagerUc1.Size = new System.Drawing.Size(800, 361);
+            this.cardManagerUc1.Size = new System.Drawing.Size(800, 76);
             this.cardManagerUc1.TabIndex = 0;
+            // 
+            // tagManagerUc1
+            // 
+            this.tagManagerUc1.CurrentTagEnum = UserControlSamples.Models.TagEnum.TextTag;
+            this.tagManagerUc1.CurrentTagSourceEnum = UserControlSamples.Models.TagSourceEnum.FromText;
+            this.tagManagerUc1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tagManagerUc1.Location = new System.Drawing.Point(0, 76);
+            this.tagManagerUc1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tagManagerUc1.Name = "tagManagerUc1";
+            this.tagManagerUc1.Size = new System.Drawing.Size(800, 60);
+            this.tagManagerUc1.TabIndex = 1;
             // 
             // FrmManager
             // 
@@ -54,6 +59,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.tagManagerUc1);
             this.Controls.Add(this.cardManagerUc1);
             this.DoubleBuffered = true;
             this.Name = "FrmManager";
@@ -67,5 +73,6 @@
         #endregion
 
         private UserControls.CardManagerUc cardManagerUc1;
+        private UserControls.TagManagerUc tagManagerUc1;
     }
 }

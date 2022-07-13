@@ -54,7 +54,7 @@ namespace UserControlSamples.UI.UserControls
         public bool ContainerSizeChanged { get; private set; }
 
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.ContainerSizeChanged)]
-        public CardManagerExtend Extra { get; set; }
+        public CardManagerExtend Extra { get; private set; }
 
         [Category(CardManagerConsts.Name), Description(CardManagerConsts.CardTypeProperty), DefaultValue(CardConsts.DefaultCardEnum)]
         public CardEnum CurrentCardEnum
@@ -77,10 +77,7 @@ namespace UserControlSamples.UI.UserControls
         {
             InitializeComponent();
             _cardDics = new Dictionary<ProjectSetKey, BaseCardUc>();
-            Extra = new CardManagerExtend()
-            {
-                OldHeight = this.Height
-            };
+            Extra = new CardManagerExtend();
         }
 
         private void tsbtnAdd_Click(object sender, EventArgs e)
@@ -108,26 +105,30 @@ namespace UserControlSamples.UI.UserControls
                 }
                 if (flag)
                 {
-                    var removeWidth = deleteUc.Width + CardConsts.DefaultPaddingLeft;
-                    var removeHeight = deleteUc.Height + CardConsts.DefaultPaddingTop;
-                    item.Left -= removeWidth;
-
-                    if (item.Extra.RowIndex > deleteUc.Extra.RowIndex)
-                    {
-                        if (item.Extra.ColIndex == 0)
-                        {
-                            if (item.Left < 0)//上移到最后一个
-                            {
-                                item.Extra.RowIndex = deleteUc.Extra.RowIndex;
-                                item.Left = (Extra.Cols - 1) * removeWidth;
-                            }
-                            item.Top -= removeHeight;
-                        }
-                    }
                     item.Extra.ColIndex--;
+
+                    if (item.Extra.ColIndex < 0)
+                    {
+                        item.Extra.ColIndex = Extra.Cols;
+                        item.Extra.RowIndex--;
+                        var width = GetCardWidthByRow(item.Extra.RowIndex);
+                        item.Left = width - deleteUc.Width;
+                        item.Top -= deleteUc.Height;
+                    }
+                    else
+                    {
+                        item.Left -= deleteUc.Width + CardConsts.DefaultPaddingLeft;
+                    }
                 }
             }
             container.Controls.Remove(deleteUc);
+        }
+
+        private int GetCardWidthByRow(int row)
+        {
+            var items = _cardDics.Values.Where(o => o.Extra.RowIndex == row);
+            var count = items.Count();
+            return items.Sum(o => o.Width + CardConsts.DefaultPaddingLeft);
         }
 
         private string DisplayName()
@@ -204,34 +205,53 @@ namespace UserControlSamples.UI.UserControls
             AppendContainer(addNew);
         }
 
-        private Point NextCardLocation(Control parent, BaseCardUc newCard, int total)
+        private void AddCard(Control parent, BaseCardUc newCard, IDictionary<ProjectSetKey, BaseCardUc> refresh = null)
         {
-            var nextHeight = newCard.Height + CardConsts.DefaultPaddingTop;
-            var nextWidth = newCard.Width + CardConsts.DefaultPaddingLeft;
-
-            var items=_cardDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
-            var count = items.Count();
-            var existWidth = count * CardConsts.DefaultPaddingLeft + items.Sum(o => o.Width);
-
-            var nextX = existWidth+CardConsts.DefaultPaddingLeft;
-            var nextY = Extra.Rows * nextHeight;
-
-            Extra.Cols++;
-            if (parent.Width < existWidth + nextWidth) //超出边界
+            var defaultDics = _cardDics;
+            if (refresh != null)
             {
-                Extra.Cols = 0;
-                Extra.Rows++;
-                items = _cardDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
-                count = items.Count();
-                existWidth = count * CardConsts.DefaultPaddingLeft + items.Sum(o => o.Width);
-                nextX= existWidth + CardConsts.DefaultPaddingLeft;
-                nextY = Extra.Rows * nextHeight;
-                Height += nextHeight;
+                defaultDics = refresh;
             }
-            
+            var items = defaultDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+            var existsWidth = items.Sum(o => o.Width + CardConsts.DefaultPaddingLeft);
+
+            var nextX = existsWidth + CardConsts.DefaultPaddingLeft;
+            var nextY = Extra.Rows * newCard.Height + CardConsts.DefaultPaddingTop;
+
+            var colIndex = items.Count();
+
+            if (parent.Width < nextX + newCard.Width)
+            {
+                Extra.Cols = colIndex;
+                colIndex = 0;
+                Extra.Rows++;
+
+                items = defaultDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+
+                existsWidth = items.Sum(o => o.Width + CardConsts.DefaultPaddingLeft);
+                nextX = existsWidth + CardConsts.DefaultPaddingLeft;
+                nextY = Extra.Rows * newCard.Height + CardConsts.DefaultPaddingTop;
+            }
+            if (parent.Height < (nextY + newCard.Height))
+            {
+                if (Extra.OldHeight == 0)
+                {
+                    Extra.OldHeight = Height;
+                }
+                Height += newCard.Height + CardConsts.DefaultPaddingTop;
+            }
+
             newCard.Extra.RowIndex = Extra.Rows;
-            newCard.Extra.ColIndex = Extra.Cols;
-            return new Point(nextX, nextY);
+            newCard.Extra.ColIndex = colIndex;
+            newCard.Location = new Point(nextX, nextY);
+            newCard.Parent = parent;
+
+            CardHeight = newCard.Height;
+            CardWidth = newCard.Width;
+
+            defaultDics.Add(newCard.Key, newCard);
+            Extra.Expand = true;
+            parent.Controls.Add(newCard);
         }
 
 
@@ -255,13 +275,7 @@ namespace UserControlSamples.UI.UserControls
                 }
                 OnFireRemoveCard(uc);
             };
-            var newPoint = NextCardLocation(plContainer, newCard, CardCount);
-            newCard.Location = newPoint;
-            CardHeight = newCard.Height;
-            CardWidth = newCard.Width;
-            _cardDics.Add(newCard.Key, newCard);
-            newCard.Parent = plContainer;
-            plContainer.Controls.Add(newCard);
+            AddCard(plContainer, newCard);
             OnFireAddNewCard(newCard);
         }
 
@@ -387,13 +401,23 @@ namespace UserControlSamples.UI.UserControls
         {
             ContainerSizeChanged = true;
             if (!Extra.Expand) return;
-            var index = 0;
-            foreach (BaseCardUc item in plContainer.Controls)
+
+            var refreshDic = new Dictionary<ProjectSetKey, BaseCardUc>();
+            Extra.Rows = 0;
+            Extra.Cols = 0;
+            foreach (var uc in _cardDics.Values)
             {
-                var newPoint = NextCardLocation(plContainer, item, index);
-                item.Location = newPoint;
-                index++;
+                uc.Extra.ColIndex = 0;
+                uc.Extra.RowIndex = 0;
             }
+            plContainer.SuspendLayout();
+            foreach (var item in _cardDics.Values)
+            {
+                AddCard(plContainer, item, refreshDic);
+            }
+            plContainer.ResumeLayout();
+            Height = (Extra.Rows + 1) * (CardHeight + CardConsts.DefaultPaddingTop) + Extra.OldHeight;
+            Extra.NewHeight = Height;
         }
 
         private void Expand(CardManagerUc obj, string buttonKey)

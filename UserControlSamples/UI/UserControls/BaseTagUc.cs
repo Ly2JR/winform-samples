@@ -42,15 +42,15 @@ namespace UserControlSamples.UI.UserControls
         {
             this.Extra.OldWidth = Width;
             Extra.Tag = tag;
-            var calcWidth = GetStringLength(tag) + picClose.Width + 8;
-            if (calcWidth < this.Width)
-            {
-                this.Width = calcWidth;
-            }
-            else
-            {
-                this.Width = calcWidth + 16;
-            }
+            //var calcWidth = GetStringLength(tag) + picClose.Width + 8;
+            //if (calcWidth < this.Width)
+            //{
+            //    this.Width = calcWidth;
+            //}
+            //else
+            //{
+            //    this.Width = calcWidth + 16;
+            //}
             this.Extra.Width = Width;
             this.Extra.NewWidth = Width;
             OnFireTagWidthChanged();

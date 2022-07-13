@@ -31,12 +31,15 @@ namespace UserControlSamples.UI.UserControls
         {
             InitializeComponent();
             _tagDics = new Dictionary<ProjectSetKey, BaseTagUc>();
+            Extra = new TagManagerExtend();
         }
 
         private IDictionary<ProjectSetKey, BaseTagUc> _tagDics;
 
         [Category(TagManagerConsts.Name), Description(TagManagerConsts.CountProperty)]
-        public int Count { get { return _tagDics.Count; } }
+        public int TagCount { get { return _tagDics.Count; } }
+
+        public int TagHeight { get; private set; }
 
         private int _maxTagCount = TagManagerConsts.DefaultMaxTagCount;
 
@@ -51,6 +54,8 @@ namespace UserControlSamples.UI.UserControls
             }
         }
 
+        [Category(TagManagerConsts.Name), Description(TagManagerConsts.ExtraProperty)]
+        public TagManagerExtend Extra { get; private set; }
 
         private TagSourceEnum _currentTagSource = TagManagerConsts.DefaultTagSourceEnum;
         private TagEnum _currentTagType = TagManagerConsts.DefaultTagEnum;
@@ -178,20 +183,92 @@ namespace UserControlSamples.UI.UserControls
                 OnFireRemoveTag(uc);
             };
             newTag.OnTagWidthChanged += (obj) => {
-                if (Count <= 1) return;
+                if (TagCount <= 1) return;
                 if (obj.Extra.NewWidth == obj.Extra.OldWidth) return;
                 ResizeContainer(plContainer, obj, false);
             };
-            var x = GetNextTagLocationX(newTag);
-            newTag.Location = new Point(x, TagConsts.DefaultPaddingTopBottom);
-
-            _tagDics.Add(newTag.Key, newTag);
-            plContainer.Controls.Add(newTag);
+            AddCard(plContainer, newTag);
             OnFireAddNewCard(newTag);
             if (CurrentTagEnum == TagEnum.TextTag)
             {
                 newTag.Focus();
             };
+        }
+
+        public void RefreshLayout()
+        {
+            if (!Extra.Expand) return;
+
+            var refreshDic = new Dictionary<ProjectSetKey, BaseTagUc>();
+            Extra.Rows = 0;
+            Extra.Cols = 0;
+            foreach (var uc in _tagDics.Values)
+            {
+                uc.Extra.ColIndex = 0;
+                uc.Extra.RowIndex = 0;
+            }
+            plContainer.SuspendLayout();
+            foreach (var item in _tagDics.Values)
+            {
+                AddCard(plContainer, item, refreshDic);
+            }
+            plContainer.ResumeLayout();
+            Height = (Extra.Rows + 1) * (TagHeight + CardConsts.DefaultPaddingTop) + Extra.OldHeight;
+            Extra.NewHeight = Height;
+        }
+
+        private int GetTagWidthByRow(int row)
+        {
+            var items = _tagDics.Values.Where(o => o.Extra.RowIndex == row);
+            return items.Count() * TagConsts.DefaultPaddingLeft + items.Sum(o => o.Width);
+        }
+
+        private void AddCard(Control parent, BaseTagUc newCard, IDictionary<ProjectSetKey, BaseTagUc> refresh = null)
+        {
+            var defaultDics = _tagDics;
+            if (refresh != null)
+            {
+                defaultDics = refresh;
+            }
+
+            var items = defaultDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+            var existsWidth = items.Sum(o => o.Width + TagConsts.DefaultPaddingLeft);
+
+            var nextX = existsWidth + TagConsts.DefaultPaddingLeft;
+            var nextY = Extra.Rows * newCard.Height + TagConsts.DefaultPaddingTop;
+
+            var colIndex = items.Count();
+
+            if (parent.Width < nextX + newCard.Width)
+            {
+                Extra.Cols = colIndex;
+                colIndex = 0;
+                Extra.Rows++;
+
+                items = defaultDics.Values.Where(o => o.Extra.RowIndex == Extra.Rows);
+                existsWidth = items.Sum(o => o.Width + TagConsts.DefaultPaddingLeft);
+                nextX = existsWidth + TagConsts.DefaultPaddingLeft;
+                nextY = Extra.Rows * newCard.Height + TagConsts.DefaultPaddingTop;
+            }
+            if (parent.Height < (nextY + newCard.Height))
+            {
+                if (Extra.OldHeight == 0)
+                {
+                    Extra.OldHeight = Height;
+                }
+                Height += newCard.Height + TagConsts.DefaultPaddingTop;
+            }
+
+            newCard.Extra.RowIndex = Extra.Rows;
+            newCard.Extra.ColIndex = colIndex;
+            newCard.Location = new Point(nextX, nextY);
+            newCard.Parent = parent;
+
+            TagHeight = newCard.Height;
+
+            defaultDics.Add(newCard.Key, newCard);
+            Extra.Expand = true;
+            parent.Controls.Add(newCard);
         }
 
         private int GetNextTagLocationX(BaseTagUc newTag)
@@ -235,9 +312,23 @@ namespace UserControlSamples.UI.UserControls
                 }
                 if (flag)
                 {
+
                     if (needDelete)
                     {
-                        item.Left -= deleteUc.Width + TagConsts.DefaultPaddingLeft;
+                        item.Extra.ColIndex--;
+
+                        if (item.Extra.ColIndex < 0)
+                        {
+                            item.Extra.ColIndex = Extra.Cols;
+                            item.Extra.RowIndex--;
+                            var width = GetTagWidthByRow(item.Extra.RowIndex);
+                            item.Left = width - deleteUc.Width;
+                            item.Top -= deleteUc.Height;
+                        }
+                        else
+                        {
+                            item.Left -= deleteUc.Width + TagConsts.DefaultPaddingLeft;
+                        }
                     }
                     else
                     {

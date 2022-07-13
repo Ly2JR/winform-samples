@@ -31,13 +31,13 @@ namespace UserControlSamples.UI
             {
                 tempWindowState = FormWindowState.Maximized;
                 cardManagerUc1.RefreshLayout();
-                //tagManagerUc1.RefreshLayout();
+                tagManagerUc1.RefreshLayout();
             }
             else if (tempWindowState == FormWindowState.Maximized && this.WindowState == FormWindowState.Normal)
             {
                 tempWindowState = FormWindowState.Normal;
                 cardManagerUc1.RefreshLayout();
-                //tagManagerUc1.RefreshLayout();
+                tagManagerUc1.RefreshLayout();
             }
         }
     }

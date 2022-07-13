@@ -18,6 +18,7 @@ namespace UserControlSamples.Consts
         public const string AddButtonKey = "ADD";
         public const string ClearButtonKey = "CLEAR";
 
+        public const string ContainerSizeChanged = "容器大小是否改变";
         public const string AllowedMaxTagCountProperty = "允许最大标签数量";
         public const string TagSrouceEnumProperty = "标签数据类型";
         public const string TagEnumProperty = "标签类型";
@@ -25,7 +26,7 @@ namespace UserControlSamples.Consts
         public const string ExtraProperty = "附加信息";
 
         public const int DefaultMaxTagCount = 20;
-        public const TagEnum DefaultTagEnum = TagEnum.LabelTag;
+        public const TagEnum DefaultTagEnum = TagEnum.UnKnown;
         public const TagSourceEnum DefaultTagSourceEnum = TagSourceEnum.UnKnown;
 
         public const string LabelDisplayName = "Label标签";
