@@ -28,19 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cardManagerUc1 = new UserControlSamples.UI.UserControls.CardManagerUc();
+            this.components = new System.ComponentModel.Container();
+            this.rowMergeView1 = new UserControlSamples.UI.UserControls.RowMergeView(this.components);
             this.tagManagerUc1 = new UserControlSamples.UI.UserControls.TagManagerUc();
+            this.cardManagerUc1 = new UserControlSamples.UI.UserControls.CardManagerUc();
+            ((System.ComponentModel.ISupportInitialize)(this.rowMergeView1)).BeginInit();
             this.SuspendLayout();
             // 
-            // cardManagerUc1
+            // rowMergeView1
             // 
-            this.cardManagerUc1.CurrentCardEnum = UserControlSamples.Models.CardEnum.Card1;
-            this.cardManagerUc1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.cardManagerUc1.Location = new System.Drawing.Point(0, 0);
-            this.cardManagerUc1.Name = "cardManagerUc1";
-            this.cardManagerUc1.Padding = new System.Windows.Forms.Padding(4);
-            this.cardManagerUc1.Size = new System.Drawing.Size(800, 76);
-            this.cardManagerUc1.TabIndex = 0;
+            this.rowMergeView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.rowMergeView1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rowMergeView1.Location = new System.Drawing.Point(0, 136);
+            this.rowMergeView1.MergeColumnBackColor = System.Drawing.SystemColors.Control;
+            this.rowMergeView1.Name = "rowMergeView1";
+            this.rowMergeView1.RowHeadersWidth = 51;
+            this.rowMergeView1.RowTemplate.Height = 27;
+            this.rowMergeView1.Size = new System.Drawing.Size(1020, 455);
+            this.rowMergeView1.TabIndex = 2;
             // 
             // tagManagerUc1
             // 
@@ -50,15 +55,26 @@
             this.tagManagerUc1.Location = new System.Drawing.Point(0, 76);
             this.tagManagerUc1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tagManagerUc1.Name = "tagManagerUc1";
-            this.tagManagerUc1.Size = new System.Drawing.Size(800, 60);
+            this.tagManagerUc1.Size = new System.Drawing.Size(1020, 60);
             this.tagManagerUc1.TabIndex = 1;
+            // 
+            // cardManagerUc1
+            // 
+            this.cardManagerUc1.CurrentCardEnum = UserControlSamples.Models.CardEnum.Card1;
+            this.cardManagerUc1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.cardManagerUc1.Location = new System.Drawing.Point(0, 0);
+            this.cardManagerUc1.Name = "cardManagerUc1";
+            this.cardManagerUc1.Padding = new System.Windows.Forms.Padding(4);
+            this.cardManagerUc1.Size = new System.Drawing.Size(1020, 76);
+            this.cardManagerUc1.TabIndex = 0;
             // 
             // FrmManager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(1020, 591);
+            this.Controls.Add(this.rowMergeView1);
             this.Controls.Add(this.tagManagerUc1);
             this.Controls.Add(this.cardManagerUc1);
             this.DoubleBuffered = true;
@@ -66,6 +82,7 @@
             this.Text = "FrmManager";
             this.Shown += new System.EventHandler(this.FrmManager_Shown);
             this.SizeChanged += new System.EventHandler(this.FrmManager_SizeChanged);
+            ((System.ComponentModel.ISupportInitialize)(this.rowMergeView1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -74,5 +91,6 @@
 
         private UserControls.CardManagerUc cardManagerUc1;
         private UserControls.TagManagerUc tagManagerUc1;
+        private UserControls.RowMergeView rowMergeView1;
     }
 }

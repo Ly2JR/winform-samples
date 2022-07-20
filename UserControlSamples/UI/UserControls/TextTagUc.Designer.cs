@@ -44,20 +44,22 @@
             this.txtTag.Cursor = System.Windows.Forms.Cursors.Hand;
             this.txtTag.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtTag.Location = new System.Drawing.Point(0, 0);
+            this.txtTag.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.txtTag.MaxLength = 12;
             this.txtTag.Name = "txtTag";
-            this.txtTag.Size = new System.Drawing.Size(107, 34);
+            this.txtTag.Size = new System.Drawing.Size(107, 29);
             this.txtTag.TabIndex = 0;
             this.txtTag.DoubleClick += new System.EventHandler(this.txtTag_DoubleClick);
             this.txtTag.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTag_KeyPress);
             // 
             // TextTagUc
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 27F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
+            this.Margin = new System.Windows.Forms.Padding(3, 3, 3, 3);
             this.Name = "TextTagUc";
-            this.OnCloseTag += new UI.UserControls.BaseTagUc.CloseTagHandler(this.TextTagUc_OnCloseTag);
+            this.OnCloseTag += new UserControlSamples.UI.UserControls.BaseTagUc.CloseTagHandler(this.TextTagUc_OnCloseTag);
             this.plContainer.ResumeLayout(false);
             this.plContainer.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picClose)).EndInit();
