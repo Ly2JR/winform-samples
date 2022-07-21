@@ -46,6 +46,7 @@
             this.rowMergeView1.RowTemplate.Height = 27;
             this.rowMergeView1.Size = new System.Drawing.Size(1020, 455);
             this.rowMergeView1.TabIndex = 2;
+            this.rowMergeView1.OnMultiButton += new UserControlSamples.UI.UserControls.RowMergeView.OnMultiButtonHandler(this.rowMergeView1_OnMultiButton);
             // 
             // tagManagerUc1
             // 
@@ -78,8 +79,11 @@
             this.Controls.Add(this.tagManagerUc1);
             this.Controls.Add(this.cardManagerUc1);
             this.DoubleBuffered = true;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "FrmManager";
             this.Text = "FrmManager";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Shown += new System.EventHandler(this.FrmManager_Shown);
             this.SizeChanged += new System.EventHandler(this.FrmManager_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.rowMergeView1)).EndInit();

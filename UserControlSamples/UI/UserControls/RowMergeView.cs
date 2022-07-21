@@ -9,14 +9,28 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserControlSamples.Consts;
+using UserControlSamples.Models;
 
 namespace UserControlSamples.UI.UserControls
 {
     public partial class RowMergeView : DataGridView
     {
+        public delegate void OnMultiButtonHandler(RowMergeViewMultiButtonEventArgs e);
+
+        [Category(RowMergeViewConsts.Name), Description(RowMergeViewConsts.MultiButtonEvent)]
+        public event OnMultiButtonHandler OnMultiButton;
+
+        private ImageList _imageList;
+
+
+        private IDictionary<RowButonInfo, Button> _buttonManager = new Dictionary<RowButonInfo, Button>();
+
         public RowMergeView()
         {
             InitializeComponent();
+            DoubleBuffered = true;
+            //SetStyle(ControlStyles.DoubleBuffer | ControlStyles.OptimizedDoubleBuffer | ControlStyles.AllPaintingInWmPaint|ControlStyles.Selectable, true);
+            //UpdateStyles();   
         }
 
         public RowMergeView(IContainer container)
@@ -26,21 +40,6 @@ namespace UserControlSamples.UI.UserControls
             InitializeComponent();
         }
 
-        protected override void OnRowsAdded(DataGridViewRowsAddedEventArgs e)
-        {
-            if (e.RowCount != 0)
-            {
-                for (int i = 0; i < e.RowCount; i++)
-                {
-                    Rows[e.RowIndex + i].HeaderCell.Value = (e.RowIndex + i + 1).ToString();
-                }
-                for (int i = e.RowIndex + e.RowCount; i < this.Rows.Count; i++)
-                {
-                    Rows[i].HeaderCell.Value = (i + 1).ToString();
-                }
-            }
-            base.OnRowsAdded(e);
-        }
 
         #region 重写事件
 
@@ -53,13 +52,20 @@ namespace UserControlSamples.UI.UserControls
             }
             else if (e.RowIndex > -1 && e.ColumnIndex > -1)
             {
-                DrawCell(e);
+                var name = Columns[e.ColumnIndex].Name;
+                if (SpanRows.Contains(name) && e.RowIndex != -1)
+                {
+                    DrawCell(e);
+                }
+                else if (MultiButtonHeaders.ContainsKey(e.ColumnIndex) && !_buttonManager.Keys.Any(o => o.RowIndex == e.RowIndex && o.ColumnIndex == e.ColumnIndex))
+                {
+                    DrawButton(e);
+                }
             }
             else
             {
                 if (e.RowIndex == -1)
                 {
-                    //需要合并
                     if (SpanHeaders.ContainsKey(e.ColumnIndex))
                     {
                         var g = e.Graphics;
@@ -107,7 +113,6 @@ namespace UserControlSamples.UI.UserControls
                         {
                             right = Width;
                         }
-                        //一级标题
                         g.DrawString(SpanHeaders[e.ColumnIndex].Text, e.CellStyle.Font, fontBrush, new Rectangle(left, top, right - left, (bottom - top) / 2), sf);
                         e.Handled = true;
                     }
@@ -119,15 +124,26 @@ namespace UserControlSamples.UI.UserControls
 
         #endregion
 
+        protected override void OnRowsAdded(DataGridViewRowsAddedEventArgs e)
+        {
+            if (e.RowCount != 0)
+            {
+                for (int i = 0; i < e.RowCount; i++)
+                {
+                    Rows[e.RowIndex + i].HeaderCell.Value = (e.RowIndex + i + 1).ToString();
+                }
+                for (int i = e.RowIndex + e.RowCount; i < this.Rows.Count; i++)
+                {
+                    Rows[i].HeaderCell.Value = (i + 1).ToString();
+                }
+            }
+            base.OnRowsAdded(e);
+        }
+
         #region 画单元格
-        /// <summary>
-        /// 画单元格
-        /// </summary>
+
         private void DrawCell(DataGridViewCellPaintingEventArgs e)
         {
-            var name = Columns[e.ColumnIndex].Name;
-            if (!MergeColumnNames.Contains(name) && e.RowIndex != -1) return;
-
             var currentVal = e.Value == null ? "" : e.Value.ToString().Trim();
             if (string.IsNullOrEmpty(currentVal)) return;
 
@@ -174,22 +190,127 @@ namespace UserControlSamples.UI.UserControls
             //    //e.Graphics.FillRectangle(backBrush, e.CellBounds.X,upRows* e.CellBounds.Top, e.CellBounds.Width, e.CellBounds.Height*count);
             //}
 
-            //填充背景
             e.Graphics.FillRectangle(backBrush, e.CellBounds);
-            //画字符串
-            PaintingFont(e, cellWidth, upRows, downRows, count);
+
+            PaintingString(e, cellWidth, upRows, downRows, count);
             if (downRows == 1)
             {
-                //下线
                 e.Graphics.DrawLine(gridLinePen, e.CellBounds.Left, e.CellBounds.Bottom - 1, e.CellBounds.Right - 1, e.CellBounds.Bottom - 1);
                 count = 0;
             }
-            //右线
+
             e.Graphics.DrawLine(gridLinePen, e.CellBounds.Right - 1, e.CellBounds.Top, e.CellBounds.Right - 1, e.CellBounds.Bottom);
             e.Handled = true;
         }
 
-        private void PaintingFont(DataGridViewCellPaintingEventArgs e, int cellWidth, int upRows, int downRows, int count)
+        private readonly int ButtonPadding = 1;
+
+        private void DrawButton(DataGridViewCellPaintingEventArgs e)
+        {
+            //if (!MultiButtonHeaders.ContainsKey(e.ColumnIndex)) return;
+            var btns = MultiButtonHeaders[e.ColumnIndex];
+            var ret = GetCellDisplayRectangle(e.ColumnIndex, e.RowIndex, false);
+            var btnWidth = (ret.Width - (btns.Count + 1) * ButtonPadding) / btns.Count;
+            for (var i = 0; i < btns.Count; i++)
+            {
+                var key = btns[i];
+                key.RowIndex = e.RowIndex;
+                key.ColumnIndex = e.ColumnIndex;
+                //if (_buttonManager.ContainsKey(key)) break;
+                var tag = key.Clone() as RowButonInfo;
+                var btn = new Button()
+                {
+                    Size = new Size(btnWidth, ret.Height - 2),
+                    Location = new Point(ret.Left + i * btnWidth + (i + 1) * ButtonPadding, ret.Top + ButtonPadding),
+                    Name = $"{key}",
+                    Text = btns[i].Text,
+                    Tag = tag,
+                    BackColor = Color.White,
+                    ImageAlign = ContentAlignment.MiddleRight,
+                    TextAlign = ContentAlignment.MiddleCenter,
+                    //Enabled = false,
+                };
+                //btn.FlatAppearance.MouseOverBackColor = _mergeColumnBackColor;
+                if (!string.IsNullOrEmpty(btns[i].ImageKey) && _imageList != null)
+                {
+                    btn.TextImageRelation = TextImageRelation.ImageBeforeText;
+                    btn.ImageList = _imageList;
+                    btn.ImageKey = btns[i].ImageKey;
+                }
+                btn.Click += Btn_Click;
+                _buttonManager.Add(tag, btn);
+                this.Controls.Add(btn);
+            }
+        }
+
+        public void DeleteButton(int rowIndex)
+        {
+            for (var i = 0; i < _buttonManager.Count; i++)
+            {
+                var btn = _buttonManager.ElementAt(i);
+                if (btn.Key.RowIndex == rowIndex)
+                {
+                    this.Controls.Remove(btn.Value);
+                }
+                else if (btn.Key.RowIndex > rowIndex)
+                {
+                    btn.Key.RowIndex--;
+                    btn.Value.Top -= btn.Value.Height + 2;
+                }
+            }
+            Rows.RemoveAt(rowIndex);
+        }
+
+        public void ClearButton()
+        {
+            for (var i = Controls.Count - 1; i > 0; i--)
+            {
+                if (Controls[i] is Button)
+                {
+                    Controls.RemoveAt(i);
+                }
+            }
+            _buttonManager.Clear();
+        }
+
+        public void SetButtonEnable(bool enable)
+        {
+            foreach (var btn in _buttonManager)
+            {
+                btn.Value.Enabled = enable;
+            }
+        }
+
+        public void SetButtonEnable(RowButonInfo key, bool enable)
+        {
+            if (!_buttonManager.ContainsKey(key)) return;
+            _buttonManager[key].Enabled = enable;
+        }
+
+        private void Btn_Click(object sender, EventArgs e)
+        {
+            var btn = sender as Button;
+            if (btn == null) return;
+            var tag = btn.Tag as RowButonInfo;
+            if (tag == null) return;
+            OnFireMultiButton(new RowMergeViewMultiButtonEventArgs()
+            {
+                RowIndex = tag.RowIndex,
+                ColumnIndex = tag.ColumnIndex,
+                ButtonText = tag.Text,
+                ButtonKey = tag.Key
+            });
+        }
+
+        private void OnFireMultiButton(RowMergeViewMultiButtonEventArgs e)
+        {
+            if (OnMultiButton != null)
+            {
+                OnMultiButton(e);
+            }
+        }
+
+        private void PaintingString(DataGridViewCellPaintingEventArgs e, int cellWidth, int upRows, int downRows, int count)
         {
             var currentVal = e.Value.ToString();
             var fontBrush = new SolidBrush(e.CellStyle.ForeColor);
@@ -236,22 +357,20 @@ namespace UserControlSamples.UI.UserControls
 
         #region 自定义
 
-        private IList<string> _megeColumnNames = new List<string>();
+        private IList<string> _spanRows = new List<string>();
 
         [MergableProperty(false)]
         [Editor("System.Windows.Forms.Design.ListControlStringCollectionEditor, System.Design, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a", typeof(UITypeEditor))]
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Visible)]
         [Localizable(true)]
         [Category(RowMergeViewConsts.Name), Description(RowMergeViewConsts.MergeColumnNamesProperty), Browsable(true)]
-        public IList<string> MergeColumnNames { get { return _megeColumnNames; } }
+        public IList<string> SpanRows { get { return _spanRows; } }
 
         private Color _mergeColumnBackColor = SystemColors.Control;
 
         [Category(RowMergeViewConsts.Name), Description(RowMergeViewConsts.MergeColumnBackColorProperty), Browsable(true)]
         public Color MergeColumnBackColor { get { return _mergeColumnBackColor; } set { _mergeColumnBackColor = value; } }
-        /// <summary>
-        /// 表头
-        /// </summary>
+
         private struct SpanInfo
         {
             /// <summary>
@@ -280,44 +399,51 @@ namespace UserControlSamples.UI.UserControls
             }
         }
 
+
+
         private IDictionary<int, SpanInfo> SpanHeaders = new Dictionary<int, SpanInfo>();
 
-        /// <summary>
-        /// 合并列
-        /// </summary>
-        /// <param name="colIndex">列索引</param>
-        /// <param name="colCount">需要合并的列数</param>
-        /// <param name="text">合并后的文本</param>
+        private IDictionary<int, List<RowButonInfo>> MultiButtonHeaders = new Dictionary<int, List<RowButonInfo>>();
+
         public void AddSpanHeader(int colIndex, int colCount, string text)
         {
-            //if (colCount < 2) return;
-            //当前列的最后一列索引
             int right = colIndex + colCount - 1;
-            //当前列
+
             SpanHeaders[colIndex] = new SpanInfo(text, 1, colIndex, right);
-            //最右列
+
             SpanHeaders[right] = new SpanInfo(text, 3, colIndex, right);
-            //中间列
+
             for (var i = colIndex + 1; i < right; i++)
             {
                 SpanHeaders[i] = new SpanInfo(text, 2, colIndex, right);
             }
         }
 
-        /// <summary>
-        /// 清除列合并
-        /// </summary>
+        public void AddMultiButtonColumn(int colIndex, RowButonInfo row)
+        {
+            if (!MultiButtonHeaders.ContainsKey(colIndex))
+            {
+                MultiButtonHeaders.Add(colIndex, new List<RowButonInfo>() { row });
+            }
+            else
+            {
+                MultiButtonHeaders[colIndex].Add(row);
+            }
+        }
+
         public void ClearSpan()
         {
             SpanHeaders.Clear();
         }
 
-        public void ReDrawHead()
+        public void ReDraw(int colIndex, int rowIndex)
         {
-            foreach (var col in SpanHeaders.Keys)
-            {
-                Invalidate(GetCellDisplayRectangle(col, -1, true));
-            }
+            Invalidate(GetCellDisplayRectangle(colIndex, rowIndex, true));
+        }
+
+        public void SetImageList(ImageList imageList)
+        {
+            this._imageList = imageList;
         }
         #endregion
     }

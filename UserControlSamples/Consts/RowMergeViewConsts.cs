@@ -10,6 +10,8 @@ namespace UserControlSamples.Consts
     {
         public const string Name = "多维表头";
 
+        public const string MultiButtonEvent = "多按钮事件";
+
         public const string MergeColumnNamesProperty = "合并表头集合";
         public const string MergeColumnBackColorProperty = "合并表头颜色";
 

@@ -61,7 +61,9 @@
     <Compile Include="Models\ProjectSetKey.cs" />
     <Compile Include="Models\BaseCardExtend.cs" />
     <Compile Include="Models\RmvInfo.cs" />
+    <Compile Include="Models\RmvMultiButtonInfo.cs" />
     <Compile Include="Models\RmvSpanInfo.cs" />
+    <Compile Include="Models\RowButtonInfo.cs" />
     <Compile Include="Models\TagEnum.cs" />
     <Compile Include="Models\TagManagerExtend.cs" />
     <Compile Include="Models\TagSourceEnum.cs" />
@@ -125,6 +127,7 @@
     <Compile Include="UI\UserControls\RowMergeView.Designer.cs">
       <DependentUpon>RowMergeView.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\UserControls\RowMergeViewMultiButtonEventArgs.cs" />
     <Compile Include="UI\UserControls\TagManagerUc.cs">
       <SubType>UserControl</SubType>
     </Compile>

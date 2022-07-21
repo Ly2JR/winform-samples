@@ -39,5 +39,7 @@ namespace UserControlSamples.Models
         public bool Merge { get; set; }
 
         public RmvSpanInfo Span { get; set; }
+
+        public List<RmvMultiButtonInfo> Buttons { get; set; }
     }
 }

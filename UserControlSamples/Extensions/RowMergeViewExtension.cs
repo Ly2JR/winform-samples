@@ -38,7 +38,7 @@ namespace UserControlSamples.Extensions
 
             var rowHeadersDefaultCellStyle = new DataGridViewCellStyle
             {
-                Alignment = DataGridViewContentAlignment.MiddleCenter,
+                Alignment = DataGridViewContentAlignment.MiddleLeft,
                 BackColor = Color.LightCyan,
                 Font = new Font("微软雅黑", 10F, FontStyle.Regular, GraphicsUnit.Point, 134),
                 ForeColor = Color.Red,
@@ -60,8 +60,8 @@ namespace UserControlSamples.Extensions
             rowMergerView.AllowUserToDeleteRows = false;
             rowMergerView.AllowUserToResizeColumns = false;
             rowMergerView.AllowUserToResizeRows = false;
-            rowMergerView.BackgroundColor = Color.White;
-            rowMergerView.RowTemplate.ReadOnly = true;
+            rowMergerView.BackgroundColor = SystemColors.Control;
+            rowMergerView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             rowMergerView.BorderStyle = BorderStyle.Fixed3D;
             rowMergerView.ReadOnly = true;
             rowMergerView.MultiSelect = false;
@@ -77,31 +77,46 @@ namespace UserControlSamples.Extensions
         /// </summary>
         /// <param name="rowMergerView"></param>
         /// <param name="cols"></param>
-        public static void InitColumns(this RowMergeView rowMergerView, IList<RmvInfo> cols)
+        public static void InitColumns(this RowMergeView rowMergerView, IList<RmvInfo> cols, ImageList imageList = null)
         {
             rowMergerView.Columns.Clear();
             foreach (var col in cols.OrderBy(o => o.Order))
             {
                 var textCol = new DataGridViewTextBoxColumn
                 {
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.None,
+                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
                     HeaderText = col.Text,
                     DataPropertyName = col.FieldName,
                     Name = col.FieldName,
                     SortMode = DataGridViewColumnSortMode.NotSortable,
-                    Width = col.Width,
-                    Visible = col.Visible
+                    Visible = col.Visible,
                 };
+                if (col.Width > 0)
+                {
+                    textCol.FillWeight = col.Width;
+                }
+                else
+                {
+                    textCol.Width = 0;
+                }
                 if (col.Merge)
                 {
-                    rowMergerView.MergeColumnNames.Add(col.FieldName);
+                    rowMergerView.SpanRows.Add(col.FieldName);
                 }
                 if (col.Span != null)
                 {
                     rowMergerView.AddSpanHeader(col.Order, col.Span.SpanColumn, col.Span.SpanHeader);
                 }
+                if (col.Buttons != null)
+                {
+                    foreach (var item in col.Buttons)
+                    {
+                        rowMergerView.AddMultiButtonColumn(col.Order, item);
+                    }
+                }
                 rowMergerView.Columns.Add(textCol);
             }
+            rowMergerView.SetImageList(imageList);
         }
     }
 }

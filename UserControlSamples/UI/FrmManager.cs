@@ -25,6 +25,21 @@ namespace UserControlSamples.UI
             new RmvInfo(){FieldName="city",Order=0,Width=150,Text="城市",Visible=true,Merge=true},
             new RmvInfo(){FieldName="man",Order=2,Width=150,Text="男",Visible=true,Span=new RmvSpanInfo(){ SpanColumn=2,SpanHeader="人数"}},
             new RmvInfo(){FieldName="women",Order=3,Width=150,Text="女",Visible=true,},
+            new RmvInfo(){FieldName="operation",Order=4,Width=160,Text="操作",Visible=true,
+                Buttons=new List<RmvMultiButtonInfo>(){
+                    new RmvMultiButtonInfo()
+                    {
+                        Key="btnCopyLine",
+                        Text="复制",
+                        Order=0,
+                    },
+                    new RmvMultiButtonInfo()
+                    {
+                        Key="btnDelLine",
+                        Text="删行",
+                        Order=1,
+                    },
+                } },
         };
 
         FormWindowState tempWindowState;
@@ -78,6 +93,15 @@ namespace UserControlSamples.UI
                 tempWindowState = FormWindowState.Normal;
                 cardManagerUc1.RefreshLayout();
                 tagManagerUc1.RefreshLayout();
+            }
+        }
+
+        private void rowMergeView1_OnMultiButton(UserControls.RowMergeViewMultiButtonEventArgs e)
+        {
+            MessageBox.Show($"第{e.RowIndex}行,第{e.ColumnIndex}列,名称:{e.ButtonText},按钮:{e.ButtonKey}");
+            if (e.ButtonKey == "btnDelLine")
+            {
+                rowMergeView1.DeleteButton(e.RowIndex);
             }
         }
     }
