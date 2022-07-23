@@ -1,6 +1,6 @@
 ﻿namespace UserControlSamples.Models
 {
-    public class RmvSpanInfo
+    public class MdgvHeaderInfo
     {
         public int SpanColumn { get; set; }
 

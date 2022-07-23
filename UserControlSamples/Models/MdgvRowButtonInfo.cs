@@ -1,6 +1,6 @@
 ﻿namespace UserControlSamples.Models
 {
-    public class RmvMultiButtonInfo
+    public class MdgvRowButtonInfo
     {
         public string Text { get; set; }
 
@@ -10,7 +10,7 @@
 
         public int Order { get; set; }
 
-        public static implicit operator RowButonInfo(RmvMultiButtonInfo dto)
+        public static implicit operator RowButonInfo(MdgvRowButtonInfo dto)
         {
             var row = new RowButonInfo()
             {

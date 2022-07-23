@@ -2,7 +2,7 @@
 
 namespace UserControlSamples.Models
 {
-    public class RmvInfo
+    public class MdgvInfo
     {
         /// <summary>
         /// 字段名
@@ -37,7 +37,7 @@ namespace UserControlSamples.Models
         /// <summary>
         /// 单元格是否合并
         /// </summary>
-        public bool Merge { get; set; }
+        public bool MergeCell { get; set; }
 
         /// <summary>
         /// 1:普通文本
@@ -48,11 +48,11 @@ namespace UserControlSamples.Models
         /// <summary>
         /// 合并栏目
         /// </summary>
-        public RmvSpanInfo Span { get; set; }
+        public MdgvHeaderInfo MergeHeader { get; set; }
 
         /// <summary>
         /// 按钮栏目
         /// </summary>
-        public List<RmvMultiButtonInfo> Buttons { get; set; }
+        public List<MdgvRowButtonInfo> RowButtons { get; set; }
     }
 }

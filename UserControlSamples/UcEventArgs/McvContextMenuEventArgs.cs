@@ -2,9 +2,9 @@
 
 namespace UserControlSamples.UcEventArgs
 {
-    public class RmvContextMenuEventArgs : EventArgs
+    public class McvContextMenuEventArgs : EventArgs
     {
-        public RmvContextMenuEventArgs()
+        public McvContextMenuEventArgs()
         {
 
         }

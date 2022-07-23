@@ -53,16 +53,16 @@
     <Compile Include="Consts\TagConsts.cs" />
     <Compile Include="Consts\TagManagerConsts.cs" />
     <Compile Include="Consts\TextTagConsts.cs" />
-    <Compile Include="Extensions\RowMergeViewExtension.cs" />
+    <Compile Include="Extensions\MergeDataGridViewExtension.cs" />
     <Compile Include="Facade.cs" />
     <Compile Include="Models\BaseTagExtend.cs" />
     <Compile Include="Models\CardEnum.cs" />
     <Compile Include="Models\CardManagerExtend.cs" />
     <Compile Include="Models\ProjectSetKey.cs" />
     <Compile Include="Models\BaseCardExtend.cs" />
-    <Compile Include="Models\RmvInfo.cs" />
-    <Compile Include="Models\RmvMultiButtonInfo.cs" />
-    <Compile Include="Models\RmvSpanInfo.cs" />
+    <Compile Include="Models\MdgvInfo.cs" />
+    <Compile Include="Models\MdgvRowButtonInfo.cs" />
+    <Compile Include="Models\MdgvHeaderInfo.cs" />
     <Compile Include="Models\RowButtonInfo.cs" />
     <Compile Include="Models\TagEnum.cs" />
     <Compile Include="Models\TagManagerExtend.cs" />
@@ -73,8 +73,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UcEventArgs\RmvContextMenuEventArgs.cs" />
-    <Compile Include="UcEventArgs\RmvRowButtonEventArgs.cs" />
+    <Compile Include="UcEventArgs\McvContextMenuEventArgs.cs" />
+    <Compile Include="UcEventArgs\McvRowButtonEventArgs.cs" />
     <Compile Include="UI\FrmAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,11 +117,11 @@
     <Compile Include="UI\UserControls\LabelTagUc.Designer.cs">
       <DependentUpon>LabelTagUc.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\RowMergeView.cs">
+    <Compile Include="UI\UserControls\MergeDataGridView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="UI\UserControls\RowMergeView.Designer.cs">
-      <DependentUpon>RowMergeView.cs</DependentUpon>
+    <Compile Include="UI\UserControls\MergeDataGridView.Designer.cs">
+      <DependentUpon>MergeDataGridView.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\TagManagerUc.cs">
       <SubType>UserControl</SubType>
@@ -135,6 +135,7 @@
     <Compile Include="UI\UserControls\TextTagUc.Designer.cs">
       <DependentUpon>TextTagUc.cs</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ImageHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Images\add.png" />

@@ -1,6 +1,6 @@
 ﻿namespace UserControlSamples.UI.UserControls
 {
-    partial class RowMergeView
+    partial class MergeDataGridView
     {
         /// <summary>
         /// 必需的设计器变量。

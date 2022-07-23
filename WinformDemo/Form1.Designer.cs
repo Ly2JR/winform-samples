@@ -35,7 +35,7 @@
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.cardManagerUc1 = new UserControlSamples.UI.UserControls.CardManagerUc();
             this.tagManagerUc1 = new UserControlSamples.UI.UserControls.TagManagerUc();
-            this.rowMergeView1 = new UserControlSamples.UI.UserControls.RowMergeView(this.components);
+            this.rowMergeView1 = new UserControlSamples.UI.UserControls.MergeDataGridView(this.components);
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -114,13 +114,13 @@
             this.rowMergeView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.rowMergeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rowMergeView1.Location = new System.Drawing.Point(3, 3);
-            this.rowMergeView1.MergeColumnBackColor = System.Drawing.SystemColors.Control;
+            this.rowMergeView1.MergeHeaderBackColor = System.Drawing.SystemColors.Control;
             this.rowMergeView1.Name = "rowMergeView1";
             this.rowMergeView1.RowHeadersWidth = 51;
             this.rowMergeView1.RowTemplate.Height = 27;
             this.rowMergeView1.Size = new System.Drawing.Size(786, 415);
             this.rowMergeView1.TabIndex = 0;
-            this.rowMergeView1.OnRowButton += new UserControlSamples.UI.UserControls.RowMergeView.OnRowButtonHandler(this.rowMergeView1_OnMultiButton);
+            this.rowMergeView1.OnRowButton += new UserControlSamples.UI.UserControls.MergeDataGridView.OnRowButtonHandler(this.rowMergeView1_OnMultiButton);
             // 
             // Form1
             // 
@@ -152,7 +152,7 @@
         private System.Windows.Forms.TabPage tabPage2;
         private UserControlSamples.UI.UserControls.TagManagerUc tagManagerUc1;
         private System.Windows.Forms.TabPage tabPage3;
-        private UserControlSamples.UI.UserControls.RowMergeView rowMergeView1;
+        private UserControlSamples.UI.UserControls.MergeDataGridView rowMergeView1;
     }
 }
 

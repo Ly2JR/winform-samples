@@ -2,9 +2,9 @@
 
 namespace UserControlSamples.UcEventArgs
 {
-    public class RmvRowButtonEventArgs : EventArgs
+    public class McvRowButtonEventArgs : EventArgs
     {
-        public RmvRowButtonEventArgs()
+        public McvRowButtonEventArgs()
         {
 
         }

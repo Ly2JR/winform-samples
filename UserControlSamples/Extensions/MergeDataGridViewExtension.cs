@@ -8,13 +8,13 @@ using UserControlSamples.UI.UserControls;
 
 namespace UserControlSamples.Extensions
 {
-    public static class RowMergeViewExtension
+    public static class MergeDataGridViewExtension
     {
         /// <summary>
         /// 默认样式
         /// </summary>
         /// <param name="rowMergerView"></param>
-        public static void DefaultStyle(this RowMergeView rowMergerView)
+        public static void DefaultStyle(this MergeDataGridView rowMergerView)
         {
             var alternatingRowsDefaultCellStyle = new DataGridViewCellStyle
             {
@@ -52,7 +52,7 @@ namespace UserControlSamples.Extensions
 
             rowMergerView.AutoGenerateColumns = false;
             rowMergerView.TopLeftHeaderCell.Value = "行号";
-            rowMergerView.ColumnHeadersHeight = RowMergeViewConsts.DefaultColumnHeight;
+            rowMergerView.ColumnHeadersHeight = MergeDataGridViewConsts.DefaultColumnHeight;
             rowMergerView.AllowUserToAddRows = false;
             rowMergerView.AllowUserToDeleteRows = false;
             rowMergerView.AllowUserToResizeColumns = false;
@@ -75,7 +75,7 @@ namespace UserControlSamples.Extensions
         /// </summary>
         /// <param name="rowMergerView"></param>
         /// <param name="cols"></param>
-        public static void InitColumns(this RowMergeView rowMergerView, IList<RmvInfo> cols, ImageList imageList = null)
+        public static void InitColumns(this MergeDataGridView rowMergerView, IList<MdgvInfo> cols, ImageList imageList = null)
         {
             rowMergerView.Columns.Clear();
             foreach (var col in cols.OrderBy(o => o.Order))
@@ -114,20 +114,20 @@ namespace UserControlSamples.Extensions
                 {
                     colBase.Width = 0;
                 }
-                if (col.Merge)
+                if (col.MergeCell)
                 {
-                    rowMergerView.SpanRows.Add(col.FieldName);
+                    rowMergerView.MergeCells.Add(col.FieldName);
                 }
-                if (col.Span != null)
+                if (col.MergeHeader != null)
                 {
-                    rowMergerView.AddSpanHeader(col.Order, col.Span.SpanColumn, col.Span.SpanHeader);
+                    rowMergerView.AddMergeHeader(col.Order, col.MergeHeader.SpanColumn, col.MergeHeader.SpanHeader);
                 }
-                if (col.Buttons != null)
+                if (col.RowButtons != null)
                 {
                     colBase.ReadOnly = true;
-                    foreach (var item in col.Buttons)
+                    foreach (var item in col.RowButtons)
                     {
-                        rowMergerView.AddMultiButtonColumn(col.Order, item);
+                        rowMergerView.AddRowButton(col.Order, item);
                     }
                 }
                 if (col.IsPrimaryKey)

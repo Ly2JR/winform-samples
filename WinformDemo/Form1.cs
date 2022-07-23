@@ -17,24 +17,24 @@ namespace WinformDemo
 
         private readonly DataTable DefaultDataTable = new DataTable();
 
-        private readonly IList<RmvInfo> DefaultColumns = new List<RmvInfo>()
+        private readonly IList<MdgvInfo> DefaultColumns = new List<MdgvInfo>()
         {
-            new RmvInfo(){FieldName="key",Order=0,Width=0,Text="主键",Visible=false,IsPrimaryKey=true},
-            new RmvInfo(){FieldName="city",Order=1,Width=150,Text="城市",Merge=true},
-            new RmvInfo(){FieldName="icon",Order=2,Width=150,Text="图标",ColumnType=2,Merge=true},
-            new RmvInfo(){FieldName="month",Order=3,Width=150,Text="月份"},
-            new RmvInfo(){FieldName="man",Order=4,Width=150,Text="男",Merge=true,
-                Span=new RmvSpanInfo(){ SpanColumn=2,SpanHeader="人数"}},
-            new RmvInfo(){FieldName="women",Order=5,Width=150,Text="女",},
-            new RmvInfo(){FieldName="operation",Order=6,Width=160,Text="操作",
-                Buttons=new List<RmvMultiButtonInfo>(){
-                    new RmvMultiButtonInfo()
+            new MdgvInfo(){FieldName="key",Order=0,Width=0,Text="主键",Visible=false,IsPrimaryKey=true},
+            new MdgvInfo(){FieldName="city",Order=1,Width=150,Text="城市",MergeCell=true},
+            new MdgvInfo(){FieldName="icon",Order=2,Width=150,Text="图标",ColumnType=2,MergeCell=true},
+            new MdgvInfo(){FieldName="month",Order=3,Width=150,Text="月份"},
+            new MdgvInfo(){FieldName="man",Order=4,Width=150,Text="男",MergeCell=true,
+                MergeHeader=new MdgvHeaderInfo(){ SpanColumn=2,SpanHeader="人数"}},
+            new MdgvInfo(){FieldName="women",Order=5,Width=150,Text="女",},
+            new MdgvInfo(){FieldName="operation",Order=6,Width=160,Text="操作",
+                RowButtons=new List<MdgvRowButtonInfo>(){
+                    new MdgvRowButtonInfo()
                     {
                         Key="btnCopyLine",
                         Text="复制",
                         Order=0,
                     },
-                    new RmvMultiButtonInfo()
+                    new MdgvRowButtonInfo()
                     {
                         Key="btnDelLine",
                         Text="删行",
@@ -101,7 +101,7 @@ namespace WinformDemo
           
         }
 
-        private void rowMergeView1_OnMultiButton(RmvRowButtonEventArgs e)
+        private void rowMergeView1_OnMultiButton(McvRowButtonEventArgs e)
         {
             MessageBox.Show($"第{e.RowIndex}行,第{e.ColumnIndex}列,名称:{e.ButtonText},按钮:{e.ButtonKey}");
             switch(e.ButtonKey)
