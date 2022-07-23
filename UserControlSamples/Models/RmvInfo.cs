@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace UserControlSamples.Models
 {
@@ -12,6 +8,11 @@ namespace UserControlSamples.Models
         /// 字段名
         /// </summary>
         public string FieldName { get; set; }
+
+        /// <summary>
+        /// 是否主键,防止单元格重复合并
+        /// </summary>
+        public bool IsPrimaryKey { get; set; }
 
         /// <summary>
         /// 宽度
@@ -31,15 +32,27 @@ namespace UserControlSamples.Models
         /// <summary>
         /// 显示
         /// </summary>
-        public bool Visible { get; set; }
+        public bool Visible { get; set; } = true;
 
         /// <summary>
-        /// 是否合并
+        /// 单元格是否合并
         /// </summary>
         public bool Merge { get; set; }
 
+        /// <summary>
+        /// 1:普通文本
+        /// 2:图片
+        /// </summary>
+        public int ColumnType { get; set; } = 1;
+
+        /// <summary>
+        /// 合并栏目
+        /// </summary>
         public RmvSpanInfo Span { get; set; }
 
+        /// <summary>
+        /// 按钮栏目
+        /// </summary>
         public List<RmvMultiButtonInfo> Buttons { get; set; }
     }
 }

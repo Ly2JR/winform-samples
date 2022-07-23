@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UserControlSamples.Models;
+﻿using UserControlSamples.Models;
 
 namespace UserControlSamples.Consts
 {
@@ -31,5 +26,5 @@ namespace UserControlSamples.Consts
 
         public const string LabelDisplayName = "Label标签";
         public const string TextDisplayName = "Text标签";
-    } 
+    }
 }

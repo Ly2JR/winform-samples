@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserControlSamples.Consts;
 using UserControlSamples.Models;
@@ -62,6 +59,7 @@ namespace UserControlSamples.Extensions
             rowMergerView.AllowUserToResizeRows = false;
             rowMergerView.BackgroundColor = SystemColors.Control;
             rowMergerView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            rowMergerView.RowHeadersWidthSizeMode = DataGridViewRowHeadersWidthSizeMode.DisableResizing;
             rowMergerView.BorderStyle = BorderStyle.Fixed3D;
             rowMergerView.ReadOnly = true;
             rowMergerView.MultiSelect = false;
@@ -82,22 +80,39 @@ namespace UserControlSamples.Extensions
             rowMergerView.Columns.Clear();
             foreach (var col in cols.OrderBy(o => o.Order))
             {
-                var textCol = new DataGridViewTextBoxColumn
+                DataGridViewColumn colBase = null;
+                if (col.ColumnType == 1)
                 {
-                    AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
-                    HeaderText = col.Text,
-                    DataPropertyName = col.FieldName,
-                    Name = col.FieldName,
-                    SortMode = DataGridViewColumnSortMode.NotSortable,
-                    Visible = col.Visible,
-                };
+                    colBase = new DataGridViewTextBoxColumn
+                    {
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                        HeaderText = col.Text,
+                        DataPropertyName = col.FieldName,
+                        Name = col.FieldName,
+                        SortMode = DataGridViewColumnSortMode.NotSortable,
+                        Visible = col.Visible,
+                    };
+                }
+                else if (col.ColumnType == 2)
+                {
+                    colBase = new DataGridViewImageColumn
+                    {
+                        AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill,
+                        HeaderText = col.Text,
+                        DataPropertyName = col.FieldName,
+                        Name = col.FieldName,
+                        SortMode = DataGridViewColumnSortMode.NotSortable,
+                        Visible = col.Visible,
+                        ImageLayout = DataGridViewImageCellLayout.Zoom,
+                    };
+                }
                 if (col.Width > 0)
                 {
-                    textCol.FillWeight = col.Width;
+                    colBase.FillWeight = col.Width;
                 }
                 else
                 {
-                    textCol.Width = 0;
+                    colBase.Width = 0;
                 }
                 if (col.Merge)
                 {
@@ -109,12 +124,17 @@ namespace UserControlSamples.Extensions
                 }
                 if (col.Buttons != null)
                 {
+                    colBase.ReadOnly = true;
                     foreach (var item in col.Buttons)
                     {
                         rowMergerView.AddMultiButtonColumn(col.Order, item);
                     }
                 }
-                rowMergerView.Columns.Add(textCol);
+                if (col.IsPrimaryKey)
+                {
+                    rowMergerView.Key = col.FieldName;
+                }
+                rowMergerView.Columns.Add(colBase);
             }
             rowMergerView.SetImageList(imageList);
         }

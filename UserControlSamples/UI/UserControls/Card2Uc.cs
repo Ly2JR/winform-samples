@@ -49,7 +49,7 @@ namespace UserControlSamples.UI.UserControls
 
         protected override void Execute(string sSql)
         {
-            
+
         }
 
         private void RobotCardUc_OnRemoveCard(BaseCardUc obj)

@@ -73,17 +73,13 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UcEventArgs\RmvContextMenuEventArgs.cs" />
+    <Compile Include="UcEventArgs\RmvRowButtonEventArgs.cs" />
     <Compile Include="UI\FrmAdd.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\FrmAdd.Designer.cs">
       <DependentUpon>FrmAdd.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\FrmManager.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\FrmManager.Designer.cs">
-      <DependentUpon>FrmManager.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\UserControls\BaseCardUc.cs">
       <SubType>UserControl</SubType>
@@ -127,7 +123,6 @@
     <Compile Include="UI\UserControls\RowMergeView.Designer.cs">
       <DependentUpon>RowMergeView.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\UserControls\RowMergeViewMultiButtonEventArgs.cs" />
     <Compile Include="UI\UserControls\TagManagerUc.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -142,7 +137,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Images\add.png" />
+    <None Include="Images\apple.png" />
+    <None Include="Images\clear.png" />
     <Content Include="Images\close.png" />
+    <None Include="Images\delete.png" />
+    <None Include="Images\down.png" />
+    <None Include="Images\no_data.png" />
+    <None Include="Images\save.png" />
+    <None Include="Images\up.png" />
     <Content Include="Images\电脑.png" />
     <Content Include="Images\电路板.png" />
     <Content Include="Images\笔记本.png" />
@@ -154,9 +157,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FrmAdd.resx">
       <DependentUpon>FrmAdd.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\FrmManager.resx">
-      <DependentUpon>FrmManager.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\UserControls\BaseCardUc.resx">
       <DependentUpon>BaseCardUc.cs</DependentUpon>

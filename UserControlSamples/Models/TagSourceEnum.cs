@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UserControlSamples.Models
+﻿namespace UserControlSamples.Models
 {
-    public enum TagSourceEnum:byte
+    public enum TagSourceEnum : byte
     {
-        FromLabel=0,
+        FromLabel = 0,
         FromText,
-        UnKnown=99
+        UnKnown = 99
     }
 }

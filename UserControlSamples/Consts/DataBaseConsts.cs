@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UserControlSamples.Consts
+﻿namespace UserControlSamples.Consts
 {
-    public  class DataBaseConsts
+    public class DataBaseConsts
     {
         public const string TableName = "T_project_set";
         public const string TypeColumn = "project_type";

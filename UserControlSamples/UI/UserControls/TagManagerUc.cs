@@ -5,7 +5,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using UserControlSamples.Consts;
 using UserControlSamples.Models;
@@ -86,7 +85,7 @@ namespace UserControlSamples.UI.UserControls
             switch (CurrentTagSourceEnum)
             {
                 case TagSourceEnum.FromLabel: return TagManagerConsts.LabelDisplayName;
-                case TagSourceEnum.FromText:return TagManagerConsts.TextDisplayName;
+                case TagSourceEnum.FromText: return TagManagerConsts.TextDisplayName;
             }
             return "";
         }
@@ -182,7 +181,8 @@ namespace UserControlSamples.UI.UserControls
                 }
                 OnFireRemoveTag(uc);
             };
-            newTag.OnTagWidthChanged += (obj) => {
+            newTag.OnTagWidthChanged += (obj) =>
+            {
                 if (TagCount <= 1) return;
                 if (obj.Extra.NewWidth == obj.Extra.OldWidth) return;
                 ResizeContainer(plContainer, obj, false);
